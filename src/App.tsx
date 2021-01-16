@@ -1,8 +1,8 @@
-import { Typography } from "@material-ui/core";
 import React from "react";
+import Register from "./screens/Register";
 
-function App() {
-  return <Typography variant="h1">Hello Coord Pesquisa</Typography>;
-}
+const App: React.FC = () => {
+  return <Register />;
+};
 
 export default App;
