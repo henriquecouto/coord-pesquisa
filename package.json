@@ -6,6 +6,7 @@
     "@hookform/resolvers": "^1.3.2",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -13,11 +14,16 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "firebase": "^8.2.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.14.1",
+    "react-redux": "^7.2.2",
     "react-scripts": "4.0.1",
-    "typescript": "^4.0.3",
+    "redux": "^4.0.5",
+    "redux-saga": "^1.1.3",
+    "reduxsauce": "^1.2.0",
+    "typescript": "^4.1.3",
     "web-vitals": "^0.2.4",
     "yup": "^0.32.8"
   },
@@ -46,6 +52,10 @@
     ]
   },
   "devDependencies": {
+    "@types/firebase": "^3.2.1",
+    "@types/react-redux": "^7.1.15",
+    "@types/redux": "^3.6.0",
+    "@types/redux-saga": "^0.10.5",
     "@types/yup": "^0.29.11"
   }
 }
