@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { LockOutlined as Lock } from "@material-ui/icons";
+import { useSnackbar } from "notistack";
 import BaseScreen from "../../components/BaseScreen";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormInput from "../../components/FormInput";
@@ -61,6 +62,7 @@ interface IFormInputs {
 const Register: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const knowledgeAreasReducer = useSelector(
     (state: IGlobalState) => state.knowledgeAreasReducer
   );
@@ -86,7 +88,7 @@ const Register: React.FC = () => {
   const selectedAcademicUnitId = watch("academicUnit");
 
   const onSubmit = (data: IFormInputs) => {
-    dispatch(UserActions.registerUserRequested(data));
+    dispatch(UserActions.registerUserRequested(data, enqueueSnackbar));
   };
 
   useEffect(() => {

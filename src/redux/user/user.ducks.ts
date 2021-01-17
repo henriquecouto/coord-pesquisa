@@ -3,7 +3,7 @@ import User from "../../entities/User";
 import IUserState from "../definitions/UserState";
 
 export const { Types: UserTypes, Creators: UserActions } = createActions({
-  registerUserRequested: ["data"],
+  registerUserRequested: ["data", "callback"],
   registerUserSucceeded: ["data"],
   registerUserFailed: ["error"],
 });
