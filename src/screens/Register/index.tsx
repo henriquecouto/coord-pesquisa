@@ -22,6 +22,7 @@ import { AcademicTitlesActions } from "../../redux/academicTitles/academicTitles
 import FormSelect from "../../components/FormSelect";
 import { AcademicUnitsActions } from "../../redux/academicUnits/academicUnits.ducks";
 import Course from "../../entities/Course";
+import Skeleton from "./Skeleton";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -105,7 +106,7 @@ const Register: React.FC = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <BaseScreen>
         <Paper className={classes.root}>
-          <Grid container direction="column" alignItems="center" spacing={2}>
+          <Grid container direction="column" alignItems="flex-end" spacing={2}>
             <Grid
               item
               container
@@ -116,105 +117,113 @@ const Register: React.FC = () => {
               <Lock className={classes.icon} fontSize="large" />
               <Typography variant="h5">Faça seu cadastro</Typography>
             </Grid>
-            <FormInput
-              name="fullName"
-              label="Nome completo"
-              control={control}
-              error={!!errors.fullName?.message}
-              message={errors.fullName?.message}
-            />
-            <FormInput
-              name="siape"
-              label="Matrícula SIAPE"
-              control={control}
-              error={!!errors.siape?.message}
-              message={errors.siape?.message}
-            />
-            <FormInput
-              name="lattes"
-              label="Link do Lattes"
-              control={control}
-              error={!!errors.lattes?.message}
-              message={errors.lattes?.message}
-            />
-            <FormAutocompleteInput
-              name="knowledgeArea"
-              label="Área de Conhecimento"
-              control={control}
-              options={knowledgeAreasReducer.knowledgeAreas}
-              getOptionLabel={(option: any) => option.name || ""}
-              getOptionSelected={(option: any, value: any) => {
-                return option.code === value.code;
-              }}
-              error={!!errors.knowledgeArea?.message}
-              message={errors.knowledgeArea?.message}
-            />
-            <FormSelect
-              name="academicTitle"
-              label="Titulação"
-              control={control}
-              options={academicTitlesReducer.academicTitles.map((item) => ({
-                value: item.id,
-                label: item.name,
-              }))}
-              error={!!errors.academicTitle?.message}
-              message={errors.academicTitle?.message}
-            />
-            <FormSelect
-              name="academicUnit"
-              label="Unidade Acadêmica"
-              control={control}
-              options={academicUnitsReducer.academicUnits.map((item) => ({
-                value: item.id,
-                label: item.name,
-              }))}
-              error={!!errors.academicUnit?.message}
-              message={errors.academicUnit?.message}
-            />
-            <FormSelect
-              name="course"
-              label="Curso com maior carga horária"
-              control={control}
-              disabled={!courses.length}
-              options={courses.map((item) => ({
-                value: item.name,
-                label: item.name,
-              }))}
-              error={!!errors.course?.message}
-              message={errors.course?.message}
-            />
-            <FormInput
-              name="email"
-              label="Email"
-              control={control}
-              error={!!errors.email?.message}
-              message={errors.email?.message}
-            />
-            <FormInput
-              name="password"
-              label="Senha"
-              control={control}
-              error={!!errors.password?.message}
-              message={errors.password?.message}
-              type="password"
-            />
-            <Grid item className={classes.item}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-              >
-                Cadastrar
-              </Button>
-            </Grid>
-            <Grid item container justify="flex-end">
-              <Link href="/">
-                <Typography variant="subtitle2" align="right">
-                  Já possui uma conta?
-                </Typography>
-              </Link>
-            </Grid>
+            {academicTitlesReducer.loading ||
+            academicUnitsReducer.loading ||
+            knowledgeAreasReducer.loading ? (
+              <Skeleton />
+            ) : (
+              <>
+                <FormInput
+                  name="fullName"
+                  label="Nome completo"
+                  control={control}
+                  error={!!errors.fullName?.message}
+                  message={errors.fullName?.message}
+                />
+                <FormInput
+                  name="siape"
+                  label="Matrícula SIAPE"
+                  control={control}
+                  error={!!errors.siape?.message}
+                  message={errors.siape?.message}
+                />
+                <FormInput
+                  name="lattes"
+                  label="Link do Lattes"
+                  control={control}
+                  error={!!errors.lattes?.message}
+                  message={errors.lattes?.message}
+                />
+                <FormAutocompleteInput
+                  name="knowledgeArea"
+                  label="Área de Conhecimento"
+                  control={control}
+                  options={knowledgeAreasReducer.knowledgeAreas}
+                  getOptionLabel={(option: any) => option.name || ""}
+                  getOptionSelected={(option: any, value: any) => {
+                    return option.code === value.code;
+                  }}
+                  error={!!errors.knowledgeArea?.message}
+                  message={errors.knowledgeArea?.message}
+                />
+                <FormSelect
+                  name="academicTitle"
+                  label="Titulação"
+                  control={control}
+                  options={academicTitlesReducer.academicTitles.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                  }))}
+                  error={!!errors.academicTitle?.message}
+                  message={errors.academicTitle?.message}
+                />
+                <FormSelect
+                  name="academicUnit"
+                  label="Unidade Acadêmica"
+                  control={control}
+                  options={academicUnitsReducer.academicUnits.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                  }))}
+                  error={!!errors.academicUnit?.message}
+                  message={errors.academicUnit?.message}
+                />
+                <FormSelect
+                  name="course"
+                  label="Curso com maior carga horária"
+                  control={control}
+                  disabled={!courses.length}
+                  options={courses.map((item) => ({
+                    value: item.name,
+                    label: item.name,
+                  }))}
+                  error={!!errors.course?.message}
+                  message={errors.course?.message}
+                />
+                <FormInput
+                  name="email"
+                  label="Email"
+                  control={control}
+                  error={!!errors.email?.message}
+                  message={errors.email?.message}
+                />
+                <FormInput
+                  name="password"
+                  label="Senha"
+                  control={control}
+                  error={!!errors.password?.message}
+                  message={errors.password?.message}
+                  type="password"
+                />
+                <Grid item className={classes.item}>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                  >
+                    Cadastrar
+                  </Button>
+                </Grid>
+                <Grid item container justify="flex-end">
+                  <Link href="/">
+                    <Typography variant="subtitle2" align="right">
+                      Já possui uma conta?
+                    </Typography>
+                  </Link>
+                </Grid>
+              </>
+            )}
           </Grid>
         </Paper>
       </BaseScreen>
