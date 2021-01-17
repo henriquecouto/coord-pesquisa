@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Grid,
-  makeStyles,
-  TextField,
-  TextFieldProps,
-  Theme,
-} from "@material-ui/core";
+import { Grid, makeStyles, TextField, Theme } from "@material-ui/core";
 import { Control, Controller } from "react-hook-form";
 import { Autocomplete, AutocompleteProps } from "@material-ui/lab";
 
@@ -15,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface IFormInput {
+interface IFormAutocompleteInput {
   control: Control<any>;
   error?: boolean;
   message?: string;
@@ -25,8 +19,8 @@ interface IFormInput {
 }
 
 const FormAutocompleteInput: React.FC<
-  IFormInput &
-    Omit<AutocompleteProps<TextFieldProps, true, true, true>, "renderInput">
+  IFormAutocompleteInput &
+    Omit<AutocompleteProps<any, true, true, true>, "renderInput">
 > = ({ control, error, message, name, label, ...props }) => {
   const classes = useStyles();
 
@@ -36,11 +30,11 @@ const FormAutocompleteInput: React.FC<
         control={control}
         name={name}
         defaultValue=""
-        render={({ onChange, value }) => {
+        render={({ onChange }) => {
           return (
             <Autocomplete
               onChange={(event: any, newValue: any) => {
-                onChange(newValue);
+                onChange(newValue?.code);
               }}
               renderInput={(params) => (
                 <TextField
