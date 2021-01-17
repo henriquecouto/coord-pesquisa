@@ -22,7 +22,7 @@ const schema = yup.object().shape({
     .required(inputErrors.requiredField),
   password: yup
     .string()
-    .min(4, inputErrors.passwordInput)
+    .min(6, inputErrors.passwordInput)
     .required(inputErrors.requiredField),
 });
 

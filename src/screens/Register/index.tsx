@@ -23,6 +23,7 @@ import FormSelect from "../../components/FormSelect";
 import { AcademicUnitsActions } from "../../redux/academicUnits/academicUnits.ducks";
 import Course from "../../entities/Course";
 import Skeleton from "./Skeleton";
+import { UserActions } from "../../redux/user/user.ducks";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -85,7 +86,7 @@ const Register: React.FC = () => {
   const selectedAcademicUnitId = watch("academicUnit");
 
   const onSubmit = (data: IFormInputs) => {
-    console.log(data);
+    dispatch(UserActions.registerUserRequested(data));
   };
 
   useEffect(() => {
