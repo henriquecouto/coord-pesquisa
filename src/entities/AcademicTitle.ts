@@ -1,6 +1,6 @@
 class AcademicTitle {
   public readonly name!: string;
-  public readonly id!: number;
+  public readonly id!: string;
 
   constructor(props: AcademicTitle) {
     Object.assign(this, props);
