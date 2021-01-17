@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Grid,
+  Link,
   makeStyles,
   Paper,
   Theme,
@@ -12,6 +13,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import FormInput from "../../components/FormInput";
 import { useForm } from "react-hook-form";
 import schema from "./validations";
+import { useDispatch, useSelector } from "react-redux";
+import { KnowledgeAreasActions } from "../../redux/knowledgeAreas/knowledgeAreas.ducks";
+import IGlobalState from "../../redux/definitions/GlobalState";
+import FormAutocompleteInput from "../../components/FormAutocompleteInput";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -41,6 +46,11 @@ interface IFormInputs {
 
 const Register: React.FC = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const knowledgeAreasReducer = useSelector(
+    (state: IGlobalState) => state.knowledgeAreasReducer
+  );
+
   const { control, handleSubmit, errors } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
     reValidateMode: "onChange",
@@ -50,6 +60,10 @@ const Register: React.FC = () => {
   const onSubmit = (data: IFormInputs) => {
     console.log(data);
   };
+
+  useEffect(() => {
+    dispatch(KnowledgeAreasActions.getKnowledgeAreasRequested());
+  }, [dispatch]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -80,10 +94,15 @@ const Register: React.FC = () => {
               error={!!errors.lattes?.message}
               message={errors.lattes?.message}
             />
-            <FormInput
+            <FormAutocompleteInput
               name="knowledgeArea"
               label="Área de Conhecimento"
               control={control}
+              options={knowledgeAreasReducer.knowledgeAreas}
+              getOptionLabel={(option: any) => option.name || ""}
+              getOptionSelected={(option: any, value: any) => {
+                return option.code === value.code;
+              }}
               error={!!errors.knowledgeArea?.message}
               message={errors.knowledgeArea?.message}
             />
@@ -132,6 +151,13 @@ const Register: React.FC = () => {
               >
                 Cadastrar
               </Button>
+            </Grid>
+            <Grid item container justify="flex-end">
+              <Link href="/">
+                <Typography variant="subtitle2" align="right">
+                  Já possui uma conta?
+                </Typography>
+              </Link>
             </Grid>
           </Grid>
         </Paper>
