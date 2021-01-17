@@ -17,6 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { KnowledgeAreasActions } from "../../redux/knowledgeAreas/knowledgeAreas.ducks";
 import IGlobalState from "../../redux/definitions/GlobalState";
 import FormAutocompleteInput from "../../components/FormAutocompleteInput";
+import { AcademicTitlesActions } from "../../redux/academicTitles/academicTitles.ducks";
+import FormSelect from "../../components/FormSelect";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -50,6 +52,9 @@ const Register: React.FC = () => {
   const knowledgeAreasReducer = useSelector(
     (state: IGlobalState) => state.knowledgeAreasReducer
   );
+  const academicTitlesReducer = useSelector(
+    (state: IGlobalState) => state.academicTitlesReducer
+  );
 
   const { control, handleSubmit, errors } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
@@ -63,6 +68,7 @@ const Register: React.FC = () => {
 
   useEffect(() => {
     dispatch(KnowledgeAreasActions.getKnowledgeAreasRequested());
+    dispatch(AcademicTitlesActions.getAcademicTitlesRequested());
   }, [dispatch]);
 
   return (
@@ -106,10 +112,14 @@ const Register: React.FC = () => {
               error={!!errors.knowledgeArea?.message}
               message={errors.knowledgeArea?.message}
             />
-            <FormInput
+            <FormSelect
               name="academicTitle"
               label="Titulação"
               control={control}
+              options={academicTitlesReducer.academicTitles.map((item) => ({
+                value: item.id,
+                label: item.name,
+              }))}
               error={!!errors.academicTitle?.message}
               message={errors.academicTitle?.message}
             />
