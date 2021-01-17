@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Grid,
@@ -19,6 +19,8 @@ import IGlobalState from "../../redux/definitions/GlobalState";
 import FormAutocompleteInput from "../../components/FormAutocompleteInput";
 import { AcademicTitlesActions } from "../../redux/academicTitles/academicTitles.ducks";
 import FormSelect from "../../components/FormSelect";
+import { AcademicUnitsActions } from "../../redux/academicUnits/academicUnits.ducks";
+import Course from "../../entities/Course";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -55,12 +57,23 @@ const Register: React.FC = () => {
   const academicTitlesReducer = useSelector(
     (state: IGlobalState) => state.academicTitlesReducer
   );
+  const academicUnitsReducer = useSelector(
+    (state: IGlobalState) => state.academicUnitsReducer
+  );
+  const [courses, setCourses] = useState([] as Array<Course>);
 
-  const { control, handleSubmit, errors } = useForm<IFormInputs>({
+  const {
+    control,
+    handleSubmit,
+    errors,
+    watch,
+    setValue,
+  } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
     reValidateMode: "onChange",
     mode: "onBlur",
   });
+  const selectedAcademicUnitId = watch("academicUnit");
 
   const onSubmit = (data: IFormInputs) => {
     console.log(data);
@@ -69,7 +82,16 @@ const Register: React.FC = () => {
   useEffect(() => {
     dispatch(KnowledgeAreasActions.getKnowledgeAreasRequested());
     dispatch(AcademicTitlesActions.getAcademicTitlesRequested());
+    dispatch(AcademicUnitsActions.getAcademicUnitsRequested());
   }, [dispatch]);
+
+  useEffect(() => {
+    setValue("course", "");
+    const selectedAcademicUnit = academicUnitsReducer.academicUnits.find(
+      (unit) => unit.id === selectedAcademicUnitId
+    );
+    setCourses(selectedAcademicUnit?.courses || []);
+  }, [selectedAcademicUnitId, academicUnitsReducer.academicUnits, setValue]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -123,17 +145,26 @@ const Register: React.FC = () => {
               error={!!errors.academicTitle?.message}
               message={errors.academicTitle?.message}
             />
-            <FormInput
+            <FormSelect
               name="academicUnit"
               label="Unidade Acadêmica"
               control={control}
+              options={academicUnitsReducer.academicUnits.map((item) => ({
+                value: item.id,
+                label: item.name,
+              }))}
               error={!!errors.academicUnit?.message}
               message={errors.academicUnit?.message}
             />
-            <FormInput
+            <FormSelect
               name="course"
               label="Curso com maior carga horária"
               control={control}
+              disabled={!courses.length}
+              options={courses.map((item) => ({
+                value: item.name,
+                label: item.name,
+              }))}
               error={!!errors.course?.message}
               message={errors.course?.message}
             />
