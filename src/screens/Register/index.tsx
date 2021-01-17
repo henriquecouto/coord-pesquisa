@@ -8,6 +8,7 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
+import { LockOutlined as Lock } from "@material-ui/icons";
 import BaseScreen from "../../components/BaseScreen";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormInput from "../../components/FormInput";
@@ -33,6 +34,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   item: {
     width: "100%",
+  },
+  icon: {
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: "100%",
+    padding: theme.spacing(2),
+    color: theme.palette.grey[100],
+    margin: theme.spacing(1),
   },
 }));
 
@@ -98,7 +106,14 @@ const Register: React.FC = () => {
       <BaseScreen>
         <Paper className={classes.root}>
           <Grid container direction="column" alignItems="center" spacing={2}>
-            <Grid item className={classes.header}>
+            <Grid
+              item
+              container
+              direction="column"
+              alignItems="center"
+              className={classes.header}
+            >
+              <Lock className={classes.icon} fontSize="large" />
               <Typography variant="h5">Faça seu cadastro</Typography>
             </Grid>
             <FormInput
