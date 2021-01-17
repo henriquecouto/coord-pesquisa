@@ -1,4 +1,4 @@
-const firebaseErrors = {
+const firebaseErrors: any = {
   "auth/app-deleted": "O banco de dados não foi localizado.",
   "auth/expired-action-code": "O código da ação o ou link expirou.",
   "auth/invalid-action-code":

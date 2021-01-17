@@ -18,10 +18,10 @@ function* registerUserSaga({ data, callback }: registerUserAction) {
     const dataToSave: any = data;
     delete dataToSave.password;
     yield firestore.collection(usersCollection).add(dataToSave);
+    yield put(UserActions.registerUserSucceeded(new User(data)));
     callback("Usuário cadastrado com sucesso!", { variant: "success" });
   } catch (error) {
     yield put(UserActions.registerUserFailed(error));
-    // @ts-ignore
     callback(firebaseErrors[error.code], { variant: "error" });
   }
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
+  CircularProgress,
   Grid,
   Link,
   makeStyles,
@@ -63,6 +64,7 @@ const Register: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const userReducer = useSelector((state: IGlobalState) => state.userReducer);
   const knowledgeAreasReducer = useSelector(
     (state: IGlobalState) => state.knowledgeAreasReducer
   );
@@ -117,7 +119,11 @@ const Register: React.FC = () => {
               alignItems="center"
               className={classes.header}
             >
-              <Lock className={classes.icon} fontSize="large" />
+              {userReducer.loading ? (
+                <CircularProgress size={35} className={classes.icon} />
+              ) : (
+                <Lock className={classes.icon} fontSize="large" />
+              )}
               <Typography variant="h5">Faça seu cadastro</Typography>
             </Grid>
             {academicTitlesReducer.loading ||
@@ -214,6 +220,7 @@ const Register: React.FC = () => {
                     fullWidth
                     variant="contained"
                     color="primary"
+                    disabled={userReducer.loading}
                   >
                     Cadastrar
                   </Button>
