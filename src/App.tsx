@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Switch, Route, useHistory, Redirect } from "react-router-dom";
 import routes from "./constants/routes";
 import { auth } from "./firebase";
-import IGlobalState from "./redux/definitions/GlobalState";
 import { UserActions } from "./redux/user/user.ducks";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
@@ -13,7 +12,6 @@ const App: React.FC = () => {
   const history = useHistory();
   const [hasUser, setHasUser] = useState(false);
   const [loading, setLoading] = useState(true);
-  const userReducer = useSelector((state: IGlobalState) => state.userReducer);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -25,7 +23,7 @@ const App: React.FC = () => {
     });
   }, [dispatch, history]);
 
-  if (loading || userReducer.loading) {
+  if (loading) {
     return <h1>loading...</h1>;
   }
 
