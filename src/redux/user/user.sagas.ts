@@ -44,12 +44,14 @@ type makeLoginAction = {
   type: typeof UserTypes.MAKE_LOGIN;
   email: string;
   password: string;
+  callback: (message: React.ReactNode, options: SnackOptions) => void;
 };
-function* makeLoginSaga({ email, password }: makeLoginAction) {
+function* makeLoginSaga({ email, password, callback }: makeLoginAction) {
   try {
-    auth.signInWithEmailAndPassword(email, password);
+    yield auth.signInWithEmailAndPassword(email, password);
   } catch (error) {
     yield put(UserActions.makeLoginFailed(error));
+    callback(firebaseErrors[error.code], { variant: "error" });
   }
 }
 

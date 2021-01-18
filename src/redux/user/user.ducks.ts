@@ -11,7 +11,7 @@ export const { Types: UserTypes, Creators: UserActions } = createActions({
   getLoggedUserSucceeded: ["data"],
   getLoggedUserFailed: ["error"],
 
-  makeLogin: ["email", "password"],
+  makeLogin: ["email", "password", "callback"],
   makeLoginFailed: ["error"],
 });
 

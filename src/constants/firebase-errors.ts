@@ -5,7 +5,7 @@ const firebaseErrors: any = {
     "O código da ação é inválido. Isso pode acontecer se o código estiver malformado ou já tiver sido usado.",
   "auth/user-disabled":
     "O usuário correspondente à credencial fornecida foi desativado.",
-  "auth/user-not-found": "O usuário não correponde à nenhuma credencial.",
+  "auth/user-not-found": "O usuário não corresponde à nenhuma credencial.",
   "auth/weak-password": "A senha é muito fraca.",
   "auth/email-already-in-use":
     "Já existe uma conta com o endereço de email fornecido.",

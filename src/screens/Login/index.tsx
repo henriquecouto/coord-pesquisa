@@ -18,6 +18,7 @@ import FormInput from "../../components/FormInput";
 import routes from "../../constants/routes";
 import { useDispatch } from "react-redux";
 import { UserActions } from "../../redux/user/user.ducks";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -48,6 +49,7 @@ interface IFormInputs {
 const Login: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { control, handleSubmit, errors } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
@@ -56,7 +58,7 @@ const Login: React.FC = () => {
   });
 
   const onSubmit = (data: IFormInputs) => {
-    dispatch(UserActions.makeLogin(data.email, data.password));
+    dispatch(UserActions.makeLogin(data.email, data.password, enqueueSnackbar));
   };
 
   return (
