@@ -6,10 +6,14 @@ export const { Types: UserTypes, Creators: UserActions } = createActions({
   registerUserRequested: ["data", "callback"],
   registerUserSucceeded: ["data"],
   registerUserFailed: ["error"],
+
+  getLoggedUserRequested: [],
+  getLoggedUserSucceeded: ["data"],
+  getLoggedUserFailed: ["error"],
 });
 
 export const INITIAL_STATE: IUserState = {
-  loggedAccount: undefined,
+  loggedUser: undefined,
   loading: false,
   error: undefined,
 };
@@ -22,12 +26,16 @@ const failed = (state: IUserState, { error }: { error: Error }) => {
   return { ...state, loading: false, error };
 };
 
-const registerUserSucceeded = (state: IUserState, { data }: { data: User }) => {
-  return { ...state, loading: false, account: data };
+const succeeded = (state: IUserState, { data }: { data: User }) => {
+  return { ...state, loading: false, loggedUser: data };
 };
 
 export const userReducer = createReducer(INITIAL_STATE, {
   [UserTypes.REGISTER_USER_REQUESTED]: requested,
   [UserTypes.REGISTER_USER_FAILED]: failed,
-  [UserTypes.REGISTER_USER_SUCCEEDED]: registerUserSucceeded,
+  [UserTypes.REGISTER_USER_SUCCEEDED]: succeeded,
+
+  [UserTypes.GET_LOGGED_USER_REQUESTED]: requested,
+  [UserTypes.GET_LOGGED_USER_FAILED]: failed,
+  [UserTypes.GET_LOGGED_USER_SUCCEEDED]: succeeded,
 });

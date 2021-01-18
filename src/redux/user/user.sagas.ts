@@ -13,11 +13,13 @@ type registerUserAction = {
 };
 function* registerUserSaga({ data, callback }: registerUserAction) {
   try {
-    yield auth.createUserWithEmailAndPassword(data.email, data.password);
-
+    const { user } = yield auth.createUserWithEmailAndPassword(
+      data.email,
+      data.password
+    );
     const dataToSave: any = data;
     delete dataToSave.password;
-    yield firestore.collection(usersCollection).add(dataToSave);
+    yield firestore.collection(usersCollection).doc(user.uid).set(dataToSave);
     yield put(UserActions.registerUserSucceeded(new User(data)));
     callback("Usuário cadastrado com sucesso!", { variant: "success" });
   } catch (error) {
@@ -26,6 +28,21 @@ function* registerUserSaga({ data, callback }: registerUserAction) {
   }
 }
 
+function* getLoggedUserSaga() {
+  try {
+    const snapshot = yield firestore
+      .collection(usersCollection)
+      .doc(auth.currentUser?.uid)
+      .get();
+    yield put(UserActions.getLoggedUserSucceeded(new User(snapshot.data())));
+  } catch (error) {
+    yield put(UserActions.getLoggedUserFailed(error));
+  }
+}
+
 export default function* userSaga() {
-  yield all([takeLatest(UserTypes.REGISTER_USER_REQUESTED, registerUserSaga)]);
+  yield all([
+    takeLatest(UserTypes.REGISTER_USER_REQUESTED, registerUserSaga),
+    takeLatest(UserTypes.GET_LOGGED_USER_REQUESTED, getLoggedUserSaga),
+  ]);
 }

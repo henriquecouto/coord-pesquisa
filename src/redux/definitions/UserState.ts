@@ -1,7 +1,7 @@
 import User from "../../entities/User";
 
 export default interface IUserState {
-  loggedAccount?: User;
+  loggedUser?: User;
   loading: boolean;
   error?: Error;
 }
