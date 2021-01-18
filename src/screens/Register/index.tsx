@@ -3,13 +3,14 @@ import {
   Button,
   CircularProgress,
   Grid,
-  Link,
+  Link as MuiLink,
   makeStyles,
   Paper,
   Theme,
   Typography,
 } from "@material-ui/core";
 import { LockOutlined as Lock } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import BaseScreen from "../../components/BaseScreen";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -26,6 +27,7 @@ import { AcademicUnitsActions } from "../../redux/academicUnits/academicUnits.du
 import Course from "../../entities/Course";
 import Skeleton from "./Skeleton";
 import { UserActions } from "../../redux/user/user.ducks";
+import routes from "../../constants/routes";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -226,11 +228,11 @@ const Register: React.FC = () => {
                   </Button>
                 </Grid>
                 <Grid item container justify="flex-end">
-                  <Link href="/">
+                  <MuiLink component={Link} to={routes.login}>
                     <Typography variant="subtitle2" align="right">
                       Já possui uma conta?
                     </Typography>
-                  </Link>
+                  </MuiLink>
                 </Grid>
               </>
             )}

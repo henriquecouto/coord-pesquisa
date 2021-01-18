@@ -40,9 +40,23 @@ function* getLoggedUserSaga() {
   }
 }
 
+type makeLoginAction = {
+  type: typeof UserTypes.MAKE_LOGIN;
+  email: string;
+  password: string;
+};
+function* makeLoginSaga({ email, password }: makeLoginAction) {
+  try {
+    auth.signInWithEmailAndPassword(email, password);
+  } catch (error) {
+    yield put(UserActions.makeLoginFailed(error));
+  }
+}
+
 export default function* userSaga() {
   yield all([
     takeLatest(UserTypes.REGISTER_USER_REQUESTED, registerUserSaga),
     takeLatest(UserTypes.GET_LOGGED_USER_REQUESTED, getLoggedUserSaga),
+    takeLatest(UserTypes.MAKE_LOGIN, makeLoginSaga),
   ]);
 }

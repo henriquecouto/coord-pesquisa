@@ -10,6 +10,9 @@ export const { Types: UserTypes, Creators: UserActions } = createActions({
   getLoggedUserRequested: [],
   getLoggedUserSucceeded: ["data"],
   getLoggedUserFailed: ["error"],
+
+  makeLogin: ["email", "password"],
+  makeLoginFailed: ["error"],
 });
 
 export const INITIAL_STATE: IUserState = {
@@ -38,4 +41,7 @@ export const userReducer = createReducer(INITIAL_STATE, {
   [UserTypes.GET_LOGGED_USER_REQUESTED]: requested,
   [UserTypes.GET_LOGGED_USER_FAILED]: failed,
   [UserTypes.GET_LOGGED_USER_SUCCEEDED]: succeeded,
+
+  [UserTypes.MAKE_LOGIN]: requested,
+  [UserTypes.MAKE_LOGIN_FAILED]: failed,
 });
