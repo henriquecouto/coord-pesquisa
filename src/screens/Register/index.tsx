@@ -228,7 +228,7 @@ const Register: React.FC = () => {
                   </Button>
                 </Grid>
                 <Grid item container justify="flex-end">
-                  <MuiLink component={Link} to={routes.login}>
+                  <MuiLink component={Link} to={routes.login.path}>
                     <Typography variant="subtitle2" align="right">
                       Já possui uma conta?
                     </Typography>

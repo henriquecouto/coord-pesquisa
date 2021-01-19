@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Switch, Route, useHistory, Redirect } from "react-router-dom";
+import Header from "./components/Header";
 import routes from "./constants/routes";
 import { auth } from "./firebase";
 import { UserActions } from "./redux/user/user.ducks";
@@ -30,23 +31,25 @@ const App: React.FC = () => {
   if (!hasUser) {
     return (
       <Switch>
-        <Route exact path={routes.login}>
+        <Route exact path={routes.login.path}>
           <Login />
         </Route>
-        <Route exact path={routes.register}>
+        <Route exact path={routes.register.path}>
           <Register />
         </Route>
-        <Redirect to={routes.login} />
+        <Redirect to={routes.login.path} />
       </Switch>
     );
   }
 
   return (
     <Switch>
-      <Route exact path={routes.home}>
-        <h1>Home</h1>
+      <Route exact path={routes.home.path}>
+        <Header position={routes.home.path}>
+          <h1>Home</h1>
+        </Header>
       </Route>
-      <Redirect to={routes.home} />
+      <Redirect to={routes.home.path} />
     </Switch>
   );
 };

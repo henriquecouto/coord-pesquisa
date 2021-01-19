@@ -102,7 +102,7 @@ const Login: React.FC = () => {
               </Button>
             </Grid>
             <Grid item container justify="flex-end">
-              <MuiLink component={Link} to={routes.register}>
+              <MuiLink component={Link} to={routes.register.path}>
                 <Typography variant="subtitle2" align="right">
                   Não tem uma conta? Cadastre-se
                 </Typography>
