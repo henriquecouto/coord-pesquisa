@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Switch, Route, useHistory, Redirect } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  useHistory,
+  Redirect,
+  useLocation,
+} from "react-router-dom";
 import Header from "./components/Header";
 import routes from "./constants/routes";
 import { auth } from "./firebase";
@@ -11,6 +17,7 @@ import Register from "./screens/Register";
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+
   const [hasUser, setHasUser] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -45,19 +52,17 @@ const App: React.FC = () => {
   }
 
   return (
-    <Switch>
-      <Route exact path={routes.home.path}>
-        <Header position={routes.home.path}>
+    <Header>
+      <Switch>
+        <Route exact path={routes.home.path}>
           <h1>Home</h1>
-        </Header>
-      </Route>
-      <Route exact path={routes.profile.path}>
-        <Header position={routes.profile.path}>
+        </Route>
+        <Route exact path={routes.profile.path}>
           <h1>Hello profile</h1>
-        </Header>
-      </Route>
-      <Redirect to={routes.home.path} />
-    </Switch>
+        </Route>
+        <Redirect to={routes.home.path} />
+      </Switch>
+    </Header>
   );
 };
 

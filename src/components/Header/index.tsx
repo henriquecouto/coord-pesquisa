@@ -21,7 +21,7 @@ import {
   Menu as MenuIcon,
   PersonOutlined as PersonOutlinedIcon,
 } from "@material-ui/icons";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import BaseScreen from "../BaseScreen";
 import routes from "../../constants/routes";
 import { UserActions } from "../../redux/user/user.ducks";
@@ -72,14 +72,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface HeaderProps {
-  position: string;
-}
-
-const Header: React.FC<HeaderProps> = ({ children, position }) => {
+const Header: React.FC = ({ children }) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const [drawer, setDrawer] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
@@ -119,7 +116,7 @@ const Header: React.FC<HeaderProps> = ({ children, position }) => {
               component={Link}
               to={route.path}
               onClick={toggleDrawer}
-              selected={position === route.path}
+              selected={location.pathname === route.path}
             >
               <ListItemIcon>{route.icon}</ListItemIcon>
               <ListItemText primary={route.name} />
