@@ -19,6 +19,8 @@ const App: React.FC = () => {
       if (user) {
         setHasUser(true);
         dispatch(UserActions.getLoggedUserRequested());
+      } else {
+        setHasUser(false);
       }
       setLoading(false);
     });

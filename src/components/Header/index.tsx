@@ -10,15 +10,22 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
+  Menu,
+  MenuItem,
   SwipeableDrawer,
   Theme,
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import { Menu as MenuIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import {
+  Menu as MenuIcon,
+  PersonOutlined as PersonOutlinedIcon,
+} from "@material-ui/icons";
+import { Link, useHistory } from "react-router-dom";
 import BaseScreen from "../BaseScreen";
 import routes from "../../constants/routes";
+import { UserActions } from "../../redux/user/user.ducks";
+import { useDispatch } from "react-redux";
 
 const drawerWidth = 250;
 
@@ -71,11 +78,28 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ children, position }) => {
   const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   const [drawer, setDrawer] = useState(false);
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+  const menuOpen = Boolean(menuAnchor);
 
   const toggleDrawer = () => {
     setDrawer((v) => !v);
+  };
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setMenuAnchor(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setMenuAnchor(null);
+  };
+
+  const logout = () => {
+    handleClose();
+    dispatch(UserActions.makeLogout());
   };
 
   const MenuList = () => (
@@ -135,6 +159,28 @@ const Header: React.FC<HeaderProps> = ({ children, position }) => {
                   </Typography>
                 </Grid>
               </Grid>
+            </Grid>
+            <Grid item>
+              <IconButton onClick={handleMenu}>
+                <PersonOutlinedIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={menuAnchor}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={menuOpen}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={logout}>Sair</MenuItem>
+              </Menu>
             </Grid>
           </Grid>
         </Toolbar>

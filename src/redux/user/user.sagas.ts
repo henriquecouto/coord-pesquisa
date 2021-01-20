@@ -55,10 +55,20 @@ function* makeLoginSaga({ email, password, callback }: makeLoginAction) {
   }
 }
 
+function* makeLogoutSaga() {
+  try {
+    yield auth.signOut();
+  } catch (error) {
+    console.log(error);
+    yield put(UserActions.makeLoginFailed(error));
+  }
+}
+
 export default function* userSaga() {
   yield all([
     takeLatest(UserTypes.REGISTER_USER_REQUESTED, registerUserSaga),
     takeLatest(UserTypes.GET_LOGGED_USER_REQUESTED, getLoggedUserSaga),
     takeLatest(UserTypes.MAKE_LOGIN, makeLoginSaga),
+    takeLatest(UserTypes.MAKE_LOGOUT, makeLogoutSaga),
   ]);
 }

@@ -13,6 +13,9 @@ export const { Types: UserTypes, Creators: UserActions } = createActions({
 
   makeLogin: ["email", "password", "callback"],
   makeLoginFailed: ["error"],
+
+  makeLogout: [],
+  makeLogoutFailed: ["error"],
 });
 
 export const INITIAL_STATE: IUserState = {
@@ -44,4 +47,7 @@ export const userReducer = createReducer(INITIAL_STATE, {
 
   [UserTypes.MAKE_LOGIN]: requested,
   [UserTypes.MAKE_LOGIN_FAILED]: failed,
+
+  [UserTypes.MAKE_LOGOUT]: requested,
+  [UserTypes.MAKE_LOGOUT_FAILED]: failed,
 });
