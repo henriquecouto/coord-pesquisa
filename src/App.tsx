@@ -51,6 +51,11 @@ const App: React.FC = () => {
           <h1>Home</h1>
         </Header>
       </Route>
+      <Route exact path={routes.profile.path}>
+        <Header position={routes.profile.path}>
+          <h1>Hello profile</h1>
+        </Header>
+      </Route>
       <Redirect to={routes.home.path} />
     </Switch>
   );

@@ -97,6 +97,11 @@ const Header: React.FC<HeaderProps> = ({ children, position }) => {
     setMenuAnchor(null);
   };
 
+  const viewProfile = () => {
+    handleClose();
+    history.push(routes.profile.path);
+  };
+
   const logout = () => {
     handleClose();
     dispatch(UserActions.makeLogout());
@@ -179,6 +184,7 @@ const Header: React.FC<HeaderProps> = ({ children, position }) => {
                 open={menuOpen}
                 onClose={handleClose}
               >
+                <MenuItem onClick={viewProfile}>Perfil</MenuItem>
                 <MenuItem onClick={logout}>Sair</MenuItem>
               </Menu>
             </Grid>
