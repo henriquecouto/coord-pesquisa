@@ -1,5 +1,5 @@
 import Route from "../entities/Route";
-import { HomeOutlined } from "@material-ui/icons";
+import { HomeOutlined, PersonOutlined } from "@material-ui/icons";
 
 const routes = {
   home: new Route({
@@ -10,7 +10,12 @@ const routes = {
   }),
   login: new Route({ name: "Entrar", path: "/entrar" }),
   register: new Route({ name: "Cadastro", path: "/cadastro" }),
-  profile: new Route({ name: "Perfil", path: "/perfil" }),
+  profile: new Route({
+    name: "Perfil",
+    path: "/perfil",
+    showInHeader: true,
+    icon: <PersonOutlined />,
+  }),
 };
 
 export default routes;

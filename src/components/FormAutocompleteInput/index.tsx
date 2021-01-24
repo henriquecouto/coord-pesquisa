@@ -30,12 +30,17 @@ const FormAutocompleteInput: React.FC<
         control={control}
         name={name}
         defaultValue=""
-        render={({ onChange }) => {
+        render={({ onChange, value }) => {
           return (
             <Autocomplete
+              value={
+                props.options.find((option) => option.code === value) || null
+              }
               onChange={(event: any, newValue: any) => {
                 onChange(newValue?.code);
               }}
+              getOptionSelected={(option, v) => option.code === v}
+              noOptionsText="Nenhuma opção encontrada!"
               renderInput={(params) => (
                 <TextField
                   {...params}

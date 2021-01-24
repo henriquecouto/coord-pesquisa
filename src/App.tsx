@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  Switch,
-  Route,
-  useHistory,
-  Redirect,
-  useLocation,
-} from "react-router-dom";
+import { Switch, Route, useHistory, Redirect } from "react-router-dom";
 import Header from "./components/Header";
 import routes from "./constants/routes";
 import { auth } from "./firebase";
 import { UserActions } from "./redux/user/user.ducks";
 import Login from "./screens/Login";
+import Profile from "./screens/Profile";
 import Register from "./screens/Register";
 
 const App: React.FC = () => {
@@ -58,7 +53,7 @@ const App: React.FC = () => {
           <h1>Home</h1>
         </Route>
         <Route exact path={routes.profile.path}>
-          <h1>Hello profile</h1>
+          <Profile />
         </Route>
         <Redirect to={routes.home.path} />
       </Switch>

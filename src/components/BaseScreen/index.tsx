@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: "auto",
   },
   withHeader: {
+    padding: 0,
     height: "calc(100vh - 64px)",
     [theme.breakpoints.down("xs")]: {
       height: "calc(100vh - 56px)",

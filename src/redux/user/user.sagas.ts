@@ -1,9 +1,19 @@
 import { OptionsObject as SnackOptions } from "notistack";
 import { all, put, takeLatest } from "redux-saga/effects";
-import { usersCollection } from "../../constants/database-collections";
+import academicTitleAdapter from "../../adapters/academicTitleAdapter";
+import academicUnitAdapter from "../../adapters/academicUnitAdapter";
+import knowledgeAreaAdapter from "../../adapters/knowledgeAreaAdapter";
+import {
+  academicTitlesCollection,
+  academicUnitsCollection,
+  knowledgeAreasCollection,
+  usersCollection,
+} from "../../constants/database-collections";
 import firebaseErrors from "../../constants/firebase-errors";
+import Course from "../../entities/Course";
 import User from "../../entities/User";
-import { firestore, auth } from "../../firebase";
+import { firestore, auth, database } from "../../firebase";
+import collectAllKnowledgeAreas from "../../helpers/collectAllKnowledgeAreas";
 import { UserActions, UserTypes } from "./user.ducks";
 
 type registerUserAction = {
@@ -30,13 +40,53 @@ function* registerUserSaga({ data, callback }: registerUserAction) {
 
 function* getLoggedUserSaga() {
   try {
-    const snapshot = yield firestore
+    const snapshot = (yield firestore
       .collection(usersCollection)
       .doc(auth.currentUser?.uid)
-      .get();
-    yield put(UserActions.getLoggedUserSucceeded(new User(snapshot.data())));
+      .get()).data();
+
+    snapshot.course = new Course({ name: snapshot.course });
+
+    snapshot.knowledgeArea = knowledgeAreaAdapter(
+      collectAllKnowledgeAreas(
+        (yield database.ref(knowledgeAreasCollection).once("value")).val()
+      ).find((item: any) => item.codigo === snapshot.knowledgeArea)
+    );
+
+    snapshot.academicUnit = academicUnitAdapter(
+      (yield database.ref(academicUnitsCollection).once("value"))
+        .val()
+        .find((item: any) => item.id === snapshot.academicUnit)
+    );
+
+    snapshot.academicTitle = academicTitleAdapter(
+      (yield database.ref(academicTitlesCollection).once("value"))
+        .val()
+        .find((item: any) => item.id === snapshot.academicTitle)
+    );
+
+    yield put(UserActions.getLoggedUserSucceeded(new User(snapshot)));
   } catch (error) {
     yield put(UserActions.getLoggedUserFailed(error));
+  }
+}
+
+type changeProfileAction = {
+  type: typeof UserTypes.CHANGE_PROFILE;
+  data: User;
+  callback: (message: React.ReactNode, options: SnackOptions) => void;
+};
+function* changeProfileSaga({ data, callback }: changeProfileAction) {
+  try {
+    yield firestore
+      .collection(usersCollection)
+      .doc(auth.currentUser?.uid)
+      .set(data);
+    yield put(UserActions.getLoggedUserRequested());
+    callback("Perfil atualizado com sucesso!", { variant: "success" });
+  } catch (error) {
+    yield put(UserActions.changeProfileFailed(error));
+    callback("Ocorreu um erro ao atualizar seu perfil!", { variant: "error" });
   }
 }
 
@@ -68,6 +118,7 @@ export default function* userSaga() {
   yield all([
     takeLatest(UserTypes.REGISTER_USER_REQUESTED, registerUserSaga),
     takeLatest(UserTypes.GET_LOGGED_USER_REQUESTED, getLoggedUserSaga),
+    takeLatest(UserTypes.CHANGE_PROFILE, changeProfileSaga),
     takeLatest(UserTypes.MAKE_LOGIN, makeLoginSaga),
     takeLatest(UserTypes.MAKE_LOGOUT, makeLogoutSaga),
   ]);
