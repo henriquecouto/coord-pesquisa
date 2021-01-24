@@ -160,7 +160,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
               fullWidth
               variant="contained"
               color="primary"
-              disabled={!Object.keys(formState.touched).length}
+              disabled={!formState.isDirty || !formState.isValid}
             >
               Salvar
             </Button>
@@ -171,7 +171,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
               variant="contained"
               color="secondary"
               onClick={() => reset()}
-              disabled={!Object.keys(formState.touched).length}
+              disabled={!formState.isDirty}
             >
               Cancelar
             </Button>
