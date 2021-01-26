@@ -10,9 +10,10 @@ import {
   usersCollection,
 } from "../../constants/database-collections";
 import firebaseErrors from "../../constants/firebase-errors";
+import { profilePictures } from "../../constants/storage";
 import Course from "../../entities/Course";
 import User from "../../entities/User";
-import { firestore, auth, database } from "../../firebase";
+import { firestore, auth, database, storage } from "../../firebase";
 import collectAllKnowledgeAreas from "../../helpers/collectAllKnowledgeAreas";
 import { UserActions, UserTypes } from "./user.ducks";
 
@@ -65,6 +66,9 @@ function* getLoggedUserSaga() {
         .find((item: any) => item.id === snapshot.academicTitle)
     );
 
+    if (snapshot.picture)
+      snapshot.picture = yield storage.ref(snapshot.picture).getDownloadURL();
+
     yield put(UserActions.getLoggedUserSucceeded(new User(snapshot)));
   } catch (error) {
     yield put(UserActions.getLoggedUserFailed(error));
@@ -87,6 +91,45 @@ function* changeProfileSaga({ data, callback }: changeProfileAction) {
   } catch (error) {
     yield put(UserActions.changeProfileFailed(error));
     callback("Ocorreu um erro ao atualizar seu perfil!", { variant: "error" });
+  }
+}
+
+type changePictureAction = {
+  type: typeof UserTypes.CHANGE_PICTURE;
+  file: File;
+  callback: (message: React.ReactNode, options: SnackOptions) => void;
+  onError: () => void;
+};
+function* changePictureSaga({ file, callback, onError }: changePictureAction) {
+  try {
+    let ext: any = file.name.split(".");
+    ext = ext[ext.length - 1];
+
+    if (ext !== "png") {
+      callback("Por favor selecione uma imagem no formato PNG!", {
+        variant: "error",
+      });
+      yield put(UserActions.changePictureFailed());
+      return;
+    }
+
+    const snapshot = yield storage
+      .ref()
+      .child(`${profilePictures}/${auth.currentUser?.uid}.${ext}`)
+      .put(file);
+
+    yield firestore
+      .collection(usersCollection)
+      .doc(auth.currentUser?.uid)
+      .set({ picture: snapshot.ref.fullPath }, { merge: true });
+
+    yield put(UserActions.getLoggedUserRequested());
+  } catch (error) {
+    yield put(UserActions.changePictureFailed(error));
+    onError();
+    callback("Não foi possível atualizar sua foto de perfil!", {
+      variant: "error",
+    });
   }
 }
 
@@ -119,6 +162,7 @@ export default function* userSaga() {
     takeLatest(UserTypes.REGISTER_USER_REQUESTED, registerUserSaga),
     takeLatest(UserTypes.GET_LOGGED_USER_REQUESTED, getLoggedUserSaga),
     takeLatest(UserTypes.CHANGE_PROFILE, changeProfileSaga),
+    takeLatest(UserTypes.CHANGE_PICTURE, changePictureSaga),
     takeLatest(UserTypes.MAKE_LOGIN, makeLoginSaga),
     takeLatest(UserTypes.MAKE_LOGOUT, makeLogoutSaga),
   ]);

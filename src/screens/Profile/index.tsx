@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Avatar, Grid, makeStyles, Paper, Theme } from "@material-ui/core";
+import { Grid, makeStyles, Paper, Theme } from "@material-ui/core";
 import IGlobalState from "../../redux/definitions/GlobalState";
-import getNameInitials from "../../helpers/getNameInitials";
 import { KnowledgeAreasActions } from "../../redux/knowledgeAreas/knowledgeAreas.ducks";
 import { AcademicTitlesActions } from "../../redux/academicTitles/academicTitles.ducks";
 import { AcademicUnitsActions } from "../../redux/academicUnits/academicUnits.ducks";
@@ -10,6 +9,7 @@ import ProfileForm from "../../components/ProfileForm";
 import User from "../../entities/User";
 import { UserActions } from "../../redux/user/user.ducks";
 import { useSnackbar } from "notistack";
+import UserAvatar from "../../components/UserAvatar";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -81,9 +81,9 @@ const Profile: React.FC = () => {
   return (
     <Grid container justify="center" className={classes.root}>
       <Grid item xs={12} className={classes.header}>
-        <Avatar className={classes.avatar}>
-          {getNameInitials(userReducer.loggedUser?.fullName)}
-        </Avatar>
+        <div className={classes.avatar}>
+          <UserAvatar changeable />
+        </div>
       </Grid>
       <Grid item>
         <Paper className={classes.form}>

@@ -12,6 +12,7 @@ class User {
   public academicUnit!: AcademicUnit;
   public course!: Course;
   public email!: string;
+  public picture!: string;
 
   constructor(props: Omit<User, "password">) {
     Object.assign(this, props);
