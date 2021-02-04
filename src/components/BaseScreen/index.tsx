@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: theme.spacing(2),
     backgroundColor: theme.palette.background.default,
-    height: "100vh",
+    height: `calc(100vh - ${theme.props?.MuiAppBar?.style?.height})`,
     overflow: "auto",
   },
   withHeader: {

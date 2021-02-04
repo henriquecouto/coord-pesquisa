@@ -5,6 +5,7 @@ import {
   TextField,
   TextFieldProps,
   Theme,
+  Typography,
 } from "@material-ui/core";
 import { Control, Controller } from "react-hook-form";
 
@@ -14,25 +15,28 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface IFormInput {
+interface FormInputProps {
   control: Control<any>;
   error?: boolean;
   message?: string;
   name: string;
   label: string;
+  outLabel?: boolean;
 }
 
-const FormInput: React.FC<IFormInput & TextFieldProps> = ({
+const FormInput: React.FC<FormInputProps & TextFieldProps> = ({
   control,
   error,
   message,
   name,
   label,
+  outLabel,
   ...props
 }) => {
   const classes = useStyles();
   return (
     <Grid item className={classes.root}>
+      {outLabel && <Typography>{label}</Typography>}
       <Controller
         control={control}
         name={name}
@@ -42,7 +46,7 @@ const FormInput: React.FC<IFormInput & TextFieldProps> = ({
             fullWidth
             type="text"
             variant="outlined"
-            label={label}
+            label={!outLabel && label}
             value={value}
             onChange={onChange}
             onBlur={onBlur}

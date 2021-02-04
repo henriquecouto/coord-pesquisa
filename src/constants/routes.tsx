@@ -1,5 +1,9 @@
 import Route from "../entities/Route";
-import { HomeOutlined, PersonOutlined } from "@material-ui/icons";
+import {
+  AssignmentIndOutlined,
+  HomeOutlined,
+  PersonOutlined,
+} from "@material-ui/icons";
 
 const routes = {
   home: new Route({
@@ -15,6 +19,12 @@ const routes = {
     path: "/perfil",
     showInHeader: true,
     icon: <PersonOutlined />,
+  }),
+  shortBio: new Route({
+    name: "Biografia",
+    path: "/biografia",
+    showInHeader: true,
+    icon: <AssignmentIndOutlined />,
   }),
 };
 

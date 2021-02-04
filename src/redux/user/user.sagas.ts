@@ -7,11 +7,13 @@ import {
   academicTitlesCollection,
   academicUnitsCollection,
   knowledgeAreasCollection,
+  shortBiosCollection,
   usersCollection,
 } from "../../constants/database-collections";
 import firebaseErrors from "../../constants/firebase-errors";
 import { profilePictures } from "../../constants/storage";
 import Course from "../../entities/Course";
+import ShortBio from "../../entities/ShortBio";
 import User from "../../entities/User";
 import { firestore, auth, database, storage } from "../../firebase";
 import collectAllKnowledgeAreas from "../../helpers/collectAllKnowledgeAreas";
@@ -157,6 +159,41 @@ function* makeLogoutSaga() {
   }
 }
 
+function* getShortBioSaga() {
+  try {
+    const snapshot = (yield firestore
+      .collection(shortBiosCollection)
+      .doc(auth.currentUser?.uid)
+      .get()).data();
+
+    yield put(UserActions.getShortBioSucceeded(new ShortBio(snapshot)));
+  } catch (error) {
+    yield put(UserActions.getShortBioFailed(error));
+  }
+}
+
+type changeShortBioAction = {
+  type: typeof UserTypes.CHANGE_PROFILE;
+  data: ShortBio;
+  callback: (message: React.ReactNode, options: SnackOptions) => void;
+};
+function* changeShortBioSaga({ data, callback }: changeShortBioAction) {
+  try {
+    yield firestore
+      .collection(shortBiosCollection)
+      .doc(auth.currentUser?.uid)
+      .set(data);
+    yield put(UserActions.changeShortBioSucceeded(new ShortBio(data)));
+    callback("Biografia atualizada com sucesso!", { variant: "success" });
+  } catch (error) {
+    console.log(error);
+    yield put(UserActions.changeProfileFailed(error));
+    callback("Ocorreu um erro ao atualizar sua biografia!", {
+      variant: "error",
+    });
+  }
+}
+
 export default function* userSaga() {
   yield all([
     takeLatest(UserTypes.REGISTER_USER_REQUESTED, registerUserSaga),
@@ -165,5 +202,7 @@ export default function* userSaga() {
     takeLatest(UserTypes.CHANGE_PICTURE, changePictureSaga),
     takeLatest(UserTypes.MAKE_LOGIN, makeLoginSaga),
     takeLatest(UserTypes.MAKE_LOGOUT, makeLogoutSaga),
+    takeLatest(UserTypes.GET_SHORT_BIO_REQUESTED, getShortBioSaga),
+    takeLatest(UserTypes.CHANGE_SHORT_BIO, changeShortBioSaga),
   ]);
 }

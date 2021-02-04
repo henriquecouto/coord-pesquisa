@@ -8,6 +8,7 @@ import { UserActions } from "./redux/user/user.ducks";
 import Login from "./screens/Login";
 import Profile from "./screens/Profile";
 import Register from "./screens/Register";
+import ShortBio from "./screens/ShortBio";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -54,6 +55,9 @@ const App: React.FC = () => {
         </Route>
         <Route exact path={routes.profile.path}>
           <Profile />
+        </Route>
+        <Route exact path={routes.shortBio.path}>
+          <ShortBio />
         </Route>
         <Redirect to={routes.home.path} />
       </Switch>

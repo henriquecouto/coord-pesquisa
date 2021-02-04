@@ -1,4 +1,5 @@
 import { createActions, createReducer } from "reduxsauce";
+import ShortBio from "../../entities/ShortBio";
 import User from "../../entities/User";
 import IUserState from "../definitions/UserState";
 
@@ -22,10 +23,19 @@ export const { Types: UserTypes, Creators: UserActions } = createActions({
 
   makeLogout: [],
   makeLogoutFailed: ["error"],
+
+  getShortBioRequested: [],
+  getShortBioSucceeded: ["data"],
+  getShortBioFailed: ["error"],
+
+  changeShortBio: ["data", "callback"],
+  changeShortBioSucceeded: ["data"],
+  changeShortBioFailed: ["error"],
 });
 
 export const INITIAL_STATE: IUserState = {
   loggedUser: undefined,
+  shortBio: undefined,
   loading: false,
   error: undefined,
 };
@@ -40,6 +50,10 @@ const failed = (state: IUserState, { error }: { error: Error }) => {
 
 const succeeded = (state: IUserState, { data }: { data: User }) => {
   return { ...state, loading: false, loggedUser: data };
+};
+
+const succeededShortBio = (state: IUserState, { data }: { data: ShortBio }) => {
+  return { ...state, loading: false, shortBio: data };
 };
 
 export const userReducer = createReducer(INITIAL_STATE, {
@@ -62,4 +76,12 @@ export const userReducer = createReducer(INITIAL_STATE, {
 
   [UserTypes.MAKE_LOGOUT]: requested,
   [UserTypes.MAKE_LOGOUT_FAILED]: failed,
+
+  [UserTypes.GET_SHORT_BIO_REQUESTED]: requested,
+  [UserTypes.GET_SHORT_BIO_FAILED]: failed,
+  [UserTypes.GET_SHORT_BIO_SUCCEEDED]: succeededShortBio,
+
+  [UserTypes.CHANGE_SHORT_BIO]: requested,
+  [UserTypes.CHANGE_SHORT_BIO_SUCCEEDED]: succeededShortBio,
+  [UserTypes.CHANGE_SHORT_BIO_FAILED]: failed,
 });
