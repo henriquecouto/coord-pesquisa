@@ -8,6 +8,8 @@ import FormInput from "../../components/FormInput";
 import BaseScreen from "../../components/BaseScreen";
 import FormInputArray from "../../components/FormInputArray";
 import ShortBio from "../../entities/ShortBio";
+import { Print } from "@material-ui/icons";
+import { useBiographyPrinter } from "../../contexts/BiographyPrinter";
 
 interface IFormInputs {
   researchGate: string;
@@ -28,12 +30,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: 1080,
     padding: theme.spacing(4),
   },
+  printIcon: {
+    marginLeft: theme.spacing(1.5),
+  },
 }));
 
 const ShortBioForm: React.FC<ShortBioFormProps> = ({ onSubmit, shortBio }) => {
   const classes = useStyles();
+  const { viewPrint } = useBiographyPrinter();
 
-  const { control, handleSubmit, errors, reset } = useForm<IFormInputs>({
+  const {
+    control,
+    handleSubmit,
+    errors,
+    reset,
+    getValues,
+  } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
     reValidateMode: "onChange",
     mode: "onBlur",
@@ -43,10 +55,11 @@ const ShortBioForm: React.FC<ShortBioFormProps> = ({ onSubmit, shortBio }) => {
       ...shortBio,
     },
   });
+
   return (
     <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
       <BaseScreen>
-        <Grid container direction="column" spacing={1}>
+        <Grid container direction="column" spacing={2}>
           <Grid item>
             <Card title="Biografia">
               <FormInput
@@ -112,13 +125,31 @@ const ShortBioForm: React.FC<ShortBioFormProps> = ({ onSubmit, shortBio }) => {
               />
             </Card>
           </Grid>
-          <Grid item container justify="space-between">
+          <Grid item container justify="space-between" direction="row">
+            <Grid item xs>
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Button type="submit" variant="contained" color="primary">
+                    Salvar
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    onClick={() => reset()}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    Cancelar
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
             <Grid item>
-              <Button type="submit" variant="contained" color="primary">
-                Salvar
-              </Button>
-              <Button onClick={() => reset()} color="primary">
-                Cancelar
+              <Button
+                variant="contained"
+                onClick={() => viewPrint(new ShortBio(getValues()))}
+              >
+                Visualizar Impressão <Print className={classes.printIcon} />
               </Button>
             </Grid>
           </Grid>
