@@ -1,16 +1,9 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  makeStyles,
-  Theme,
-} from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 import { Print } from "@material-ui/icons";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { useSelector } from "react-redux";
+import BiographyPreview from "../../components/BiographyPreview";
+import Modal from "../../components/Modal";
 import Biography from "../../entities/Biography";
 import ShortBio from "../../entities/ShortBio";
 import IGlobalState from "../../redux/definitions/GlobalState";
@@ -55,29 +48,20 @@ export const BiographyPrinterProvider: React.FC = ({ children }) => {
 
   return (
     <BiographyPrinterContext.Provider value={{ viewPrint }}>
-      <Dialog
-        fullWidth
-        onClose={() => setBiography(null)}
+      <Modal
         open={!!biography}
-        maxWidth={"md"}
+        onClose={() => setBiography(null)}
+        action={{
+          title: (
+            <>
+              Imprimir <Print className={classes.printIcon} />
+            </>
+          ),
+          run: () => console.log("imprimir"),
+        }}
       >
-        <DialogTitle>Visualizar impressão</DialogTitle>
-        <DialogContent dividers>IMPRESSÃO</DialogContent>
-        <DialogActions>
-          <Grid container justify="flex-end" spacing={2}>
-            <Grid item>
-              <Button color="primary" onClick={() => setBiography(null)}>
-                Fechar
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button variant="contained" color="primary">
-                Imprimir <Print className={classes.printIcon} />
-              </Button>
-            </Grid>
-          </Grid>
-        </DialogActions>
-      </Dialog>
+        {biography && <BiographyPreview biography={biography} />}
+      </Modal>
       {children}
     </BiographyPrinterContext.Provider>
   );
