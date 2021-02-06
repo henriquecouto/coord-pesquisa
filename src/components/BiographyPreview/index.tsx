@@ -131,8 +131,8 @@ const BiographyPreview: React.FC<BiographyPreviewProps> = ({ biography }) => {
             <Grid item>
               <Typography variant="h5">FORMAÇÃO ACADÊMICA</Typography>
             </Grid>
-            {biography.academicData.education?.map((item) => (
-              <Grid item>
+            {biography.academicData.education?.map((item, index) => (
+              <Grid item key={index + item.value}>
                 <Typography variant="body1">{item.value}</Typography>
               </Grid>
             ))}
@@ -142,8 +142,8 @@ const BiographyPreview: React.FC<BiographyPreviewProps> = ({ biography }) => {
             <Grid item>
               <Typography variant="h5">PUBLICAÇÕES RECENTES</Typography>
             </Grid>
-            {biography.academicData.publications?.map((item) => (
-              <Grid item>
+            {biography.academicData.publications?.map((item, index) => (
+              <Grid item key={index + item.value}>
                 <Typography variant="body1">{item.value}</Typography>
               </Grid>
             ))}
