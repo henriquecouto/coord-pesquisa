@@ -4,6 +4,7 @@ import { UserActions } from "../../redux/user/user.ducks";
 import { useDispatch, useSelector } from "react-redux";
 import IGlobalState from "../../redux/definitions/GlobalState";
 import ShortBioForm from "../../components/ShortBioForm";
+import { BiographyPrinterProvider } from "../../contexts/BiographyPrinter";
 
 const ShortBio: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,11 @@ const ShortBio: React.FC = () => {
     return <h1>loading...</h1>;
   }
 
-  return <ShortBioForm onSubmit={onSubmit} shortBio={shortBio} />;
+  return (
+    <BiographyPrinterProvider>
+      <ShortBioForm onSubmit={onSubmit} shortBio={shortBio} />
+    </BiographyPrinterProvider>
+  );
 };
 
 export default ShortBio;
