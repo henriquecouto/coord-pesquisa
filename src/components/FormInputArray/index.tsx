@@ -9,7 +9,7 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
-import { Control, Controller, useFieldArray, useForm } from "react-hook-form";
+import { Control, Controller, useFieldArray } from "react-hook-form";
 import { Add, Remove } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) => ({
