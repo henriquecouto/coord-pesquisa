@@ -14,6 +14,9 @@ import { ReactComponent as ResearchGateIcon } from "../../assets/icons/researchg
 import { ReactComponent as OrcidIcon } from "../../assets/icons/orcid.svg";
 
 const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    margin: theme.spacing(3),
+  },
   picture: {
     width: 160,
     height: 160,
@@ -22,7 +25,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   divider: {
     height: theme.spacing(0.5),
     backgroundColor: theme.palette.primary.main,
-    margin: theme.spacing(2, 0),
+    margin: theme.spacing(1, 0),
+    "&:first-child": {
+      marginTop: theme.spacing(0.3),
+    },
+    "&:last-child": {
+      marginBottom: theme.spacing(0.3),
+    },
   },
   icon: {
     padding: theme.spacing(0.6),
@@ -42,13 +51,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface BiographyPreviewProps {
   biography: Biography;
+  setContent: React.Dispatch<React.SetStateAction<Element | null>>;
 }
 
-const BiographyPreview: React.FC<BiographyPreviewProps> = ({ biography }) => {
+const BiographyPreview: React.FC<BiographyPreviewProps> = ({
+  biography,
+  setContent,
+}) => {
   const classes = useStyles();
 
   return (
-    <>
+    <div ref={(ref) => setContent(ref)} className={classes.root}>
       <Divider className={classes.divider} />
       <Grid container spacing={2}>
         <Grid item xs={4}>
@@ -112,13 +125,13 @@ const BiographyPreview: React.FC<BiographyPreviewProps> = ({ biography }) => {
         <Grid item xs>
           <Grid container direction="column" alignItems="center">
             <Grid item>
-              <Typography variant="h4">BIOGRAFIA</Typography>
+              <Typography variant="h5">BIOGRAFIA</Typography>
             </Grid>
           </Grid>
           <Divider className={classes.divider} />
           <Grid container direction="column" spacing={2}>
             <Grid item>
-              <Typography variant="h5">RESUMO</Typography>
+              <Typography variant="h6">RESUMO</Typography>
             </Grid>
             <Grid item>
               <Typography variant="body1">
@@ -129,7 +142,7 @@ const BiographyPreview: React.FC<BiographyPreviewProps> = ({ biography }) => {
           <Divider className={classes.divider} />
           <Grid container direction="column" spacing={2}>
             <Grid item>
-              <Typography variant="h5">FORMAÇÃO ACADÊMICA</Typography>
+              <Typography variant="h6">FORMAÇÃO ACADÊMICA</Typography>
             </Grid>
             {biography.academicData.education?.map((item, index) => (
               <Grid item key={index + item.value}>
@@ -140,7 +153,7 @@ const BiographyPreview: React.FC<BiographyPreviewProps> = ({ biography }) => {
           <Divider className={classes.divider} />
           <Grid container direction="column" spacing={2}>
             <Grid item>
-              <Typography variant="h5">PUBLICAÇÕES RECENTES</Typography>
+              <Typography variant="h6">PUBLICAÇÕES RECENTES</Typography>
             </Grid>
             {biography.academicData.publications?.map((item, index) => (
               <Grid item key={index + item.value}>
@@ -148,9 +161,10 @@ const BiographyPreview: React.FC<BiographyPreviewProps> = ({ biography }) => {
               </Grid>
             ))}
           </Grid>
+          <Divider className={classes.divider} />
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 };
 
