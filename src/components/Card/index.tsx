@@ -4,6 +4,7 @@ import {
   Grid,
   makeStyles,
   Paper,
+  PaperProps,
   Theme,
   Typography,
 } from "@material-ui/core";
@@ -25,10 +26,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Card: React.FC<CardProps> = ({ children, title }) => {
+const Card: React.FC<CardProps & PaperProps> = ({
+  children,
+  title,
+  ...props
+}) => {
   const classes = useStyles();
   return (
-    <Paper>
+    <Paper {...props}>
       <Grid container direction="column">
         {!!title && (
           <>
