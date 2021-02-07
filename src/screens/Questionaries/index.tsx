@@ -1,8 +1,16 @@
-import { Grid, makeStyles, Theme, Typography } from "@material-ui/core";
+import {
+  Grid,
+  makeStyles,
+  Theme,
+  Typography,
+  Link as MuiLink,
+} from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import BaseScreen from "../../components/BaseScreen";
 import Card from "../../components/Card";
+import routes from "../../constants/routes";
 import IGlobalState from "../../redux/definitions/GlobalState";
 import { QuestionariesActions } from "../../redux/questionaries/questionaries.ducks";
 
@@ -56,10 +64,18 @@ const Questionaries: React.FC = () => {
     >
       {questionaries?.map((questionary) => (
         <Grid item key={questionary.name} className={classes.item}>
-          <Card className={classes.questionary}>
-            <Typography variant="h6">{questionary.name}</Typography>
-            <Typography>{questionary.description}</Typography>
-          </Card>
+          <MuiLink
+            component={Link}
+            to={routes.questionary.path.replace(
+              ":questionaryId",
+              questionary.id
+            )}
+          >
+            <Card className={classes.questionary}>
+              <Typography variant="h6">{questionary.name}</Typography>
+              <Typography>{questionary.description}</Typography>
+            </Card>
+          </MuiLink>
         </Grid>
       ))}
     </BaseScreen>

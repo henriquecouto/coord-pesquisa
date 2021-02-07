@@ -12,7 +12,9 @@ function* getAllQuestionariesSaga() {
     const snapshot: Questionary[] = [];
     (yield firestore
       .collection(questionariesCollection)
-      .get()).forEach((doc: any) => snapshot.push(doc.data()));
+      .get()).forEach((doc: any) =>
+      snapshot.push({ ...doc.data(), id: doc.id })
+    );
 
     yield put(QuestionariesActions.getAllQuestionariesSucceeded(snapshot));
   } catch (error) {

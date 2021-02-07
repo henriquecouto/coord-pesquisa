@@ -33,6 +33,10 @@ const routes = {
     showInHeader: true,
     icon: <QuestionAnswerOutlined />,
   }),
+  questionary: new Route({
+    name: "Questionário",
+    path: "/questionarios/:questionaryId",
+  }),
 };
 
 export default routes;
