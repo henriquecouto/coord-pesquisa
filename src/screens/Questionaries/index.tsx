@@ -9,10 +9,12 @@ import { QuestionariesActions } from "../../redux/questionaries/questionaries.du
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: theme.spacing(1),
+    [theme.breakpoints.up("md")]: {
+      justifyContent: "center",
+    },
   },
   item: {
     padding: theme.spacing(1),
-
     [theme.breakpoints.down("sm")]: {
       width: "100%",
     },
@@ -50,7 +52,6 @@ const Questionaries: React.FC = () => {
       withHeader
       justify="flex-start"
       alignItems="flex-start"
-      direction="row"
       className={classes.root}
     >
       {questionaries?.map((questionary) => (
