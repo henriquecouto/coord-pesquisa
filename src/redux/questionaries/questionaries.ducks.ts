@@ -9,9 +9,14 @@ export const {
   getAllQuestionariesRequested: [],
   getAllQuestionariesSucceeded: ["questionaries"],
   getAllQuestionariesFailed: ["error"],
+
+  getQuestionaryByIdRequested: ["id"],
+  getQuestionaryByIdSucceeded: ["questionary"],
+  getQuestionaryByIdFailed: ["error"],
 });
 
 export const INITIAL_STATE: IQuestionariesState = {
+  respondingQuestionary: undefined,
   questionaries: [],
   loading: false,
   error: undefined,
@@ -32,8 +37,19 @@ const succeeded = (
   return { ...state, loading: false, questionaries };
 };
 
+const succeededById = (
+  state: IQuestionariesState,
+  { questionary }: { questionary: Questionary }
+) => {
+  return { ...state, loading: false, respondingQuestionary: questionary };
+};
+
 export const questionariesReducer = createReducer(INITIAL_STATE, {
   [QuestionariesTypes.GET_ALL_QUESTIONARIES_REQUESTED]: requested,
   [QuestionariesTypes.GET_ALL_QUESTIONARIES_FAILED]: failed,
   [QuestionariesTypes.GET_ALL_QUESTIONARIES_SUCCEEDED]: succeeded,
+
+  [QuestionariesTypes.GET_QUESTIONARY_BY_ID_REQUESTED]: requested,
+  [QuestionariesTypes.GET_QUESTIONARY_BY_ID_FAILED]: failed,
+  [QuestionariesTypes.GET_QUESTIONARY_BY_ID_SUCCEEDED]: succeededById,
 });
