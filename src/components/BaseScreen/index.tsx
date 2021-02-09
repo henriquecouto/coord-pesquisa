@@ -41,7 +41,11 @@ const BaseScreen: React.FC<BaseScreenProps & GridProps> = ({
         container
         justify="center"
         alignItems="center"
-        className={classnames(classes.root, withHeader && classes.withHeader)}
+        className={classnames(
+          classes.root,
+          withHeader && classes.withHeader,
+          props.className || {}
+        )}
         {...props}
       >
         {children}

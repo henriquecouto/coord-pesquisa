@@ -20,7 +20,7 @@ interface FormInputProps {
   error?: boolean;
   message?: string;
   name: string;
-  label: string;
+  label?: string;
   outLabel?: boolean;
 }
 

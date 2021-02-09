@@ -7,6 +7,8 @@ import { auth } from "./firebase";
 import { UserActions } from "./redux/user/user.ducks";
 import Login from "./screens/Login";
 import Profile from "./screens/Profile";
+import Questionaries from "./screens/Questionaries";
+import Questionary from "./screens/Questionary";
 import Register from "./screens/Register";
 import ShortBio from "./screens/ShortBio";
 
@@ -58,6 +60,12 @@ const App: React.FC = () => {
         </Route>
         <Route exact path={routes.shortBio.path}>
           <ShortBio />
+        </Route>
+        <Route exact path={routes.questionaries.path}>
+          <Questionaries />
+        </Route>
+        <Route exact path={routes.questionary.path}>
+          <Questionary />
         </Route>
         <Redirect to={routes.home.path} />
       </Switch>

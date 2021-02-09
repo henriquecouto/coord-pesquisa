@@ -3,6 +3,7 @@ import {
   AssignmentIndOutlined,
   HomeOutlined,
   PersonOutlined,
+  QuestionAnswerOutlined,
 } from "@material-ui/icons";
 
 const routes = {
@@ -25,6 +26,16 @@ const routes = {
     path: "/biografia",
     showInHeader: true,
     icon: <AssignmentIndOutlined />,
+  }),
+  questionaries: new Route({
+    name: "Questionários",
+    path: "/questionarios",
+    showInHeader: true,
+    icon: <QuestionAnswerOutlined />,
+  }),
+  questionary: new Route({
+    name: "Questionário",
+    path: "/questionarios/:questionaryId",
   }),
 };
 
