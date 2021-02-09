@@ -1,14 +1,13 @@
 import { all, put, takeLatest } from "redux-saga/effects";
 import {
   questionariesCollection,
+  questionariesResponsesCollections,
   questionsCollection,
   sectionsCollection,
   subsectionsCollection,
 } from "../../constants/database-collections";
 import Questionary from "../../entities/Questionary";
-import Section from "../../entities/Section";
-import Subsection from "../../entities/Subsection";
-import { firestore } from "../../firebase";
+import { auth, firestore } from "../../firebase";
 import {
   QuestionariesActions,
   QuestionariesTypes,
@@ -33,7 +32,7 @@ type getQuestionaryByIdAction = {
   type: typeof QuestionariesTypes.GET_QUESTIONARY_BY_ID_REQUESTED;
   id: string;
 };
-function* getQuestionaryById({ id }: getQuestionaryByIdAction) {
+function* getQuestionaryByIdSaga({ id }: getQuestionaryByIdAction) {
   try {
     const snapshot: Questionary = (yield firestore
       .collection(questionariesCollection)
@@ -78,6 +77,64 @@ function* getQuestionaryById({ id }: getQuestionaryByIdAction) {
   }
 }
 
+type replyQuestionaryAction = {
+  type: typeof QuestionariesTypes.REPLY_QUESTIONARY_REQUESTED;
+  id: string;
+  replies: any;
+};
+function* replyQuestionarySaga({ id, replies }: replyQuestionaryAction) {
+  try {
+    const data = { replies, user: auth.currentUser?.uid, questionary: id };
+
+    const oldResponseId: any = [];
+
+    (yield firestore
+      .collection(questionariesResponsesCollections)
+      .where("questionary", "==", id)
+      .where("user", "==", auth.currentUser?.uid)
+      .limit(1)
+      .get()).forEach((v: any) => oldResponseId.push(v.id));
+
+    if (oldResponseId[0]) {
+      yield firestore
+        .collection(questionariesResponsesCollections)
+        .doc(oldResponseId[0])
+        .set(data);
+    } else {
+      yield firestore.collection(questionariesResponsesCollections).add(data);
+    }
+    yield put(QuestionariesActions.getQuestionaryResponsesRequested(id));
+  } catch (error) {
+    yield put(QuestionariesActions.replyQuestionaryFailed(error));
+  }
+}
+
+type getQuestionaryResponsesAction = {
+  type: typeof QuestionariesTypes.GET_QUESTIONARY_RESPONSES_REQUESTED;
+  id: string;
+};
+function* getQuestionaryResponsesSaga({ id }: getQuestionaryResponsesAction) {
+  try {
+    const snapshot: any = [];
+
+    (yield firestore
+      .collection(questionariesResponsesCollections)
+      .where("questionary", "==", id)
+      .where("user", "==", auth.currentUser?.uid)
+      .limit(1)
+      .get()).forEach((v: any) => snapshot.push(v.data()));
+
+    yield put(
+      QuestionariesActions.getQuestionaryResponsesSucceeded(
+        snapshot[0]?.replies
+      )
+    );
+  } catch (error) {
+    console.log(error);
+    yield put(QuestionariesActions.getQuestionaryResponsesFailed(error));
+  }
+}
+
 export default function* questionariesSaga() {
   yield all([
     takeLatest(
@@ -86,7 +143,15 @@ export default function* questionariesSaga() {
     ),
     takeLatest(
       QuestionariesTypes.GET_QUESTIONARY_BY_ID_REQUESTED,
-      getQuestionaryById
+      getQuestionaryByIdSaga
+    ),
+    takeLatest(
+      QuestionariesTypes.REPLY_QUESTIONARY_REQUESTED,
+      replyQuestionarySaga
+    ),
+    takeLatest(
+      QuestionariesTypes.GET_QUESTIONARY_RESPONSES_REQUESTED,
+      getQuestionaryResponsesSaga
     ),
   ]);
 }

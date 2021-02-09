@@ -20,7 +20,7 @@ interface IFormSelect {
   error?: boolean;
   message?: string;
   name: string;
-  label: string;
+  label?: string;
   options: Array<{ value: any; label: string }>;
 }
 

@@ -13,10 +13,18 @@ export const {
   getQuestionaryByIdRequested: ["id"],
   getQuestionaryByIdSucceeded: ["questionary"],
   getQuestionaryByIdFailed: ["error"],
+
+  getQuestionaryResponsesRequested: ["id"],
+  getQuestionaryResponsesSucceeded: ["responses"],
+  getQuestionaryResponsesFailed: ["error"],
+
+  replyQuestionaryRequested: ["id", "replies"],
+  replyQuestionaryFailed: ["error"],
 });
 
 export const INITIAL_STATE: IQuestionariesState = {
   respondingQuestionary: undefined,
+  respondingQuestionaryResponses: undefined,
   questionaries: [],
   loading: false,
   error: undefined,
@@ -30,14 +38,25 @@ const failed = (state: IQuestionariesState, { error }: { error: Error }) => {
   return { ...state, loading: false, error };
 };
 
-const succeeded = (
+const getAllSucceeded = (
   state: IQuestionariesState,
   { questionaries }: { questionaries: Array<Questionary> }
 ) => {
   return { ...state, loading: false, questionaries };
 };
 
-const succeededById = (
+const getResponsesSucceeded = (
+  state: IQuestionariesState,
+  { responses }: { responses: any }
+) => {
+  return {
+    ...state,
+    loading: false,
+    respondingQuestionaryResponses: responses,
+  };
+};
+
+const getByIdSucceeded = (
   state: IQuestionariesState,
   { questionary }: { questionary: Questionary }
 ) => {
@@ -47,9 +66,16 @@ const succeededById = (
 export const questionariesReducer = createReducer(INITIAL_STATE, {
   [QuestionariesTypes.GET_ALL_QUESTIONARIES_REQUESTED]: requested,
   [QuestionariesTypes.GET_ALL_QUESTIONARIES_FAILED]: failed,
-  [QuestionariesTypes.GET_ALL_QUESTIONARIES_SUCCEEDED]: succeeded,
+  [QuestionariesTypes.GET_ALL_QUESTIONARIES_SUCCEEDED]: getAllSucceeded,
 
   [QuestionariesTypes.GET_QUESTIONARY_BY_ID_REQUESTED]: requested,
   [QuestionariesTypes.GET_QUESTIONARY_BY_ID_FAILED]: failed,
-  [QuestionariesTypes.GET_QUESTIONARY_BY_ID_SUCCEEDED]: succeededById,
+  [QuestionariesTypes.GET_QUESTIONARY_BY_ID_SUCCEEDED]: getByIdSucceeded,
+
+  [QuestionariesTypes.GET_QUESTIONARY_RESPONSES_REQUESTED]: requested,
+  [QuestionariesTypes.GET_QUESTIONARY_RESPONSES_FAILED]: failed,
+  [QuestionariesTypes.GET_QUESTIONARY_RESPONSES_SUCCEEDED]: getResponsesSucceeded,
+
+  [QuestionariesTypes.REPLY_QUESTIONARY_REQUESTED]: requested,
+  [QuestionariesTypes.REPLY_QUESTIONARY_FAILED]: failed,
 });
