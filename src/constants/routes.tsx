@@ -15,6 +15,10 @@ const routes = {
   }),
   login: new Route({ name: "Entrar", path: "/entrar" }),
   register: new Route({ name: "Cadastro", path: "/cadastro" }),
+  recoverPassword: new Route({
+    name: "Recuperar Senha",
+    path: "/recuperar-senha",
+  }),
   profile: new Route({
     name: "Perfil",
     path: "/perfil",

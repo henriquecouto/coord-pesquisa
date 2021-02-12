@@ -1,24 +1,21 @@
-import React from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Button,
   Grid,
   makeStyles,
-  Link as MuiLink,
   Paper,
   Theme,
   Typography,
+  Link as MuiLink,
 } from "@material-ui/core";
 import { LockOutlined as Lock } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import schema from "./validations";
+import { Link } from "react-router-dom";
 import BaseScreen from "../../components/BaseScreen";
 import FormInput from "../../components/FormInput";
 import routes from "../../constants/routes";
-import { useDispatch } from "react-redux";
-import { UserActions } from "../../redux/user/user.ducks";
-import { useSnackbar } from "notistack";
+import schema from "./validations";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -35,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   icon: {
     backgroundColor: theme.palette.primary.main,
     borderRadius: "100%",
-    padding: theme.spacing(2),
+    padding: theme.spacing(0.8),
     color: theme.palette.grey[100],
     margin: theme.spacing(1),
   },
@@ -46,10 +43,8 @@ interface IFormInputs {
   password: string;
 }
 
-const Login: React.FC = () => {
+const RecoverPassword: React.FC = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
 
   const { control, handleSubmit, errors } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
@@ -58,7 +53,7 @@ const Login: React.FC = () => {
   });
 
   const onSubmit = (data: IFormInputs) => {
-    dispatch(UserActions.makeLogin(data.email, data.password, enqueueSnackbar));
+    console.log(data);
   };
 
   return (
@@ -74,7 +69,7 @@ const Login: React.FC = () => {
               className={classes.header}
             >
               <Lock className={classes.icon} fontSize="large" />
-              <Typography variant="h5">Entrar</Typography>
+              <Typography variant="h5">Recuperar Senha</Typography>
             </Grid>
             <FormInput
               name="email"
@@ -83,14 +78,6 @@ const Login: React.FC = () => {
               error={!!errors.email?.message}
               message={errors.email?.message}
             />
-            <FormInput
-              name="password"
-              label="Senha"
-              control={control}
-              error={!!errors.password?.message}
-              message={errors.password?.message}
-              type="password"
-            />
             <Grid item className={classes.item}>
               <Button
                 type="submit"
@@ -98,18 +85,13 @@ const Login: React.FC = () => {
                 variant="contained"
                 color="primary"
               >
-                Entrar
+                Recuperar
               </Button>
             </Grid>
             <Grid item container justify="space-between">
-              <MuiLink component={Link} to={routes.recoverPassword.path}>
+              <MuiLink component={Link} to={routes.login.path}>
                 <Typography variant="subtitle2" align="right">
-                  Esqueceu a senha?
-                </Typography>
-              </MuiLink>
-              <MuiLink component={Link} to={routes.register.path}>
-                <Typography variant="subtitle2" align="right">
-                  Não tem uma conta? Cadastre-se
+                  Quer fazer login?
                 </Typography>
               </MuiLink>
             </Grid>
@@ -120,4 +102,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default RecoverPassword;
