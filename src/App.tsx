@@ -9,6 +9,7 @@ import Login from "./screens/Login";
 import Profile from "./screens/Profile";
 import Questionaries from "./screens/Questionaries";
 import Questionary from "./screens/Questionary";
+import RecoverPassword from "./screens/RecoverPassword";
 import Register from "./screens/Register";
 import ShortBio from "./screens/ShortBio";
 
@@ -43,6 +44,9 @@ const App: React.FC = () => {
         </Route>
         <Route exact path={routes.register.path}>
           <Register />
+        </Route>
+        <Route exact path={routes.recoverPassword.path}>
+          <RecoverPassword />
         </Route>
         <Redirect to={routes.login.path} />
       </Switch>
