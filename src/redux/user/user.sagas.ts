@@ -41,6 +41,24 @@ function* registerUserSaga({ data, callback }: registerUserAction) {
   }
 }
 
+type recoverPasswordAction = {
+  type: typeof UserTypes.RECOVER_PASSWORD_REQUESTED;
+  email: string;
+  callback: (message: React.ReactNode, options: SnackOptions) => void;
+};
+function* recoverPasswordSaga({ email, callback }: recoverPasswordAction) {
+  try {
+    yield auth.sendPasswordResetEmail(email);
+    yield put(UserActions.recoverPasswordSucceeded());
+    callback("Enviamos um email para que você possa recuperar sua senha!", {
+      variant: "success",
+    });
+  } catch (error) {
+    yield put(UserActions.recoverPasswordFailed(error));
+    callback(firebaseErrors[error.code], { variant: "error" });
+  }
+}
+
 function* getLoggedUserSaga() {
   try {
     const snapshot = (yield firestore
@@ -197,6 +215,7 @@ function* changeShortBioSaga({ data, callback }: changeShortBioAction) {
 export default function* userSaga() {
   yield all([
     takeLatest(UserTypes.REGISTER_USER_REQUESTED, registerUserSaga),
+    takeLatest(UserTypes.RECOVER_PASSWORD_REQUESTED, recoverPasswordSaga),
     takeLatest(UserTypes.GET_LOGGED_USER_REQUESTED, getLoggedUserSaga),
     takeLatest(UserTypes.CHANGE_PROFILE, changeProfileSaga),
     takeLatest(UserTypes.CHANGE_PICTURE, changePictureSaga),

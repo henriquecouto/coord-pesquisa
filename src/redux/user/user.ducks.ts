@@ -8,6 +8,10 @@ export const { Types: UserTypes, Creators: UserActions } = createActions({
   registerUserSucceeded: ["data"],
   registerUserFailed: ["error"],
 
+  recoverPasswordRequested: ["email", "callback"],
+  recoverPasswordSucceeded: [],
+  recoverPasswordFailed: ["error"],
+
   getLoggedUserRequested: [],
   getLoggedUserSucceeded: ["data"],
   getLoggedUserFailed: ["error"],
@@ -56,10 +60,18 @@ const succeededShortBio = (state: IUserState, { data }: { data: ShortBio }) => {
   return { ...state, loading: false, shortBio: data };
 };
 
+const succeededRecoverPassword = (state: IUserState) => {
+  return { ...state, loading: false };
+};
+
 export const userReducer = createReducer(INITIAL_STATE, {
   [UserTypes.REGISTER_USER_REQUESTED]: requested,
   [UserTypes.REGISTER_USER_FAILED]: failed,
   [UserTypes.REGISTER_USER_SUCCEEDED]: succeeded,
+
+  [UserTypes.RECOVER_PASSWORD_REQUESTED]: requested,
+  [UserTypes.RECOVER_PASSWORD_FAILED]: failed,
+  [UserTypes.RECOVER_PASSWORD_SUCCEEDED]: succeededRecoverPassword,
 
   [UserTypes.GET_LOGGED_USER_REQUESTED]: requested,
   [UserTypes.GET_LOGGED_USER_FAILED]: failed,

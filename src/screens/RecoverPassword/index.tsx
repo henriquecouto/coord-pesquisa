@@ -9,12 +9,15 @@ import {
   Link as MuiLink,
 } from "@material-ui/core";
 import { LockOutlined as Lock } from "@material-ui/icons";
+import { useSnackbar } from "notistack";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import BaseScreen from "../../components/BaseScreen";
 import FormInput from "../../components/FormInput";
 import routes from "../../constants/routes";
+import { UserActions } from "../../redux/user/user.ducks";
 import schema from "./validations";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -40,11 +43,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface IFormInputs {
   email: string;
-  password: string;
 }
 
 const RecoverPassword: React.FC = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { control, handleSubmit, errors } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
@@ -52,8 +56,8 @@ const RecoverPassword: React.FC = () => {
     mode: "onBlur",
   });
 
-  const onSubmit = (data: IFormInputs) => {
-    console.log(data);
+  const onSubmit = ({ email }: IFormInputs) => {
+    dispatch(UserActions.recoverPasswordRequested(email, enqueueSnackbar));
   };
 
   return (
