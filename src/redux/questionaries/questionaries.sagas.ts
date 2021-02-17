@@ -72,7 +72,6 @@ function* getQuestionaryByIdSaga({ id }: getQuestionaryByIdAction) {
 
     yield put(QuestionariesActions.getQuestionaryByIdSucceeded(snapshot));
   } catch (error) {
-    console.log(error);
     yield put(QuestionariesActions.getQuestionaryByIdFailed(error));
   }
 }
@@ -130,7 +129,6 @@ function* getQuestionaryResponsesSaga({ id }: getQuestionaryResponsesAction) {
       )
     );
   } catch (error) {
-    console.log(error);
     yield put(QuestionariesActions.getQuestionaryResponsesFailed(error));
   }
 }

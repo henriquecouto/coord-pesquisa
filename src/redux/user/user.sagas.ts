@@ -172,7 +172,6 @@ function* makeLogoutSaga() {
   try {
     yield auth.signOut();
   } catch (error) {
-    console.log(error);
     yield put(UserActions.makeLoginFailed(error));
   }
 }
@@ -204,7 +203,6 @@ function* changeShortBioSaga({ data, callback }: changeShortBioAction) {
     yield put(UserActions.changeShortBioSucceeded(new ShortBio(data)));
     callback("Biografia atualizada com sucesso!", { variant: "success" });
   } catch (error) {
-    console.log(error);
     yield put(UserActions.changeProfileFailed(error));
     callback("Ocorreu um erro ao atualizar sua biografia!", {
       variant: "error",
