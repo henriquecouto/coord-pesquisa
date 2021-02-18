@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   AppBar,
+  Divider,
   Drawer,
   Grid,
   Hidden,
@@ -25,7 +26,8 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import BaseScreen from "../BaseScreen";
 import routes from "../../constants/routes";
 import { UserActions } from "../../redux/user/user.ducks";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import IGlobalState from "../../redux/definitions/GlobalState";
 
 const drawerWidth = 250;
 
@@ -77,6 +79,9 @@ const Header: React.FC = ({ children }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const location = useLocation();
+  const username = useSelector(
+    (state: IGlobalState) => state.userReducer.loggedUser?.fullName
+  );
 
   const [drawer, setDrawer] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
@@ -163,27 +168,34 @@ const Header: React.FC = ({ children }) => {
               </Grid>
             </Grid>
             <Grid item>
-              <IconButton onClick={handleMenu}>
-                <PersonOutlinedIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={menuAnchor}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={menuOpen}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={viewProfile}>Perfil</MenuItem>
-                <MenuItem onClick={logout}>Sair</MenuItem>
-              </Menu>
+              <Grid container alignItems="center">
+                <Grid item>
+                  {!!username && <Typography>Olá, {username}</Typography>}
+                </Grid>
+                <Grid item>
+                  <IconButton onClick={handleMenu}>
+                    <PersonOutlinedIcon />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={menuAnchor}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={menuOpen}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={viewProfile}>Perfil</MenuItem>
+                    <MenuItem onClick={logout}>Sair</MenuItem>
+                  </Menu>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Toolbar>
