@@ -50,9 +50,9 @@ const ShortBioForm: React.FC<ShortBioFormProps> = ({ onSubmit, shortBio }) => {
     reValidateMode: "onChange",
     mode: "onBlur",
     defaultValues: {
-      publications: [{ value: "" }],
-      education: [{ value: "" }],
       ...shortBio,
+      publications: shortBio?.publications || [{ value: "" }],
+      education: shortBio?.education || [{ value: "" }],
     },
   });
 

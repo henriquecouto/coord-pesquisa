@@ -67,10 +67,12 @@ const FormInputArray: React.FC<FormInputArrayProps & TextFieldProps> = ({
                       >
                         <Add />
                       </IconButton>
+
                       <IconButton
                         color="secondary"
                         onClick={() => remove(index)}
                         edge="end"
+                        disabled={fields.length === 1}
                       >
                         <Remove fontSize="small" />
                       </IconButton>
