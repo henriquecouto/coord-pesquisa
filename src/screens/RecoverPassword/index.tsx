@@ -65,6 +65,9 @@ const RecoverPassword: React.FC = () => {
       <BaseScreen>
         <Paper className={classes.root}>
           <Grid container direction="column" alignItems="flex-end" spacing={2}>
+            <Grid item container justify="center">
+              <Typography variant="h4">Portal do Pesquisador</Typography>
+            </Grid>
             <Grid
               item
               container
@@ -73,7 +76,7 @@ const RecoverPassword: React.FC = () => {
               className={classes.header}
             >
               <Lock className={classes.icon} fontSize="large" />
-              <Typography variant="h5">Recuperar Senha</Typography>
+              <Typography variant="h6">Recuperar Senha</Typography>
             </Grid>
             <FormInput
               name="email"

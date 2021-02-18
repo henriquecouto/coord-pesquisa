@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   icon: {
     backgroundColor: theme.palette.primary.main,
     borderRadius: "100%",
-    padding: theme.spacing(2),
+    padding: theme.spacing(0.8),
     color: theme.palette.grey[100],
     margin: theme.spacing(1),
   },
@@ -66,6 +66,9 @@ const Login: React.FC = () => {
       <BaseScreen>
         <Paper className={classes.root}>
           <Grid container direction="column" alignItems="flex-end" spacing={2}>
+            <Grid item container justify="center">
+              <Typography variant="h4">Portal do Pesquisador</Typography>
+            </Grid>
             <Grid
               item
               container
@@ -74,7 +77,7 @@ const Login: React.FC = () => {
               className={classes.header}
             >
               <Lock className={classes.icon} fontSize="large" />
-              <Typography variant="h5">Entrar</Typography>
+              <Typography variant="h6">Entrar</Typography>
             </Grid>
             <FormInput
               name="email"

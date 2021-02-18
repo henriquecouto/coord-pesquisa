@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   icon: {
     backgroundColor: theme.palette.primary.main,
     borderRadius: "100%",
-    padding: theme.spacing(2),
+    padding: theme.spacing(0.8),
     color: theme.palette.grey[100],
     margin: theme.spacing(1),
   },
@@ -114,6 +114,9 @@ const Register: React.FC = () => {
       <BaseScreen>
         <Paper className={classes.root}>
           <Grid container direction="column" alignItems="flex-end" spacing={2}>
+            <Grid item container justify="center">
+              <Typography variant="h4">Portal do Pesquisador</Typography>
+            </Grid>
             <Grid
               item
               container
@@ -126,7 +129,7 @@ const Register: React.FC = () => {
               ) : (
                 <Lock className={classes.icon} fontSize="large" />
               )}
-              <Typography variant="h5">Faça seu cadastro</Typography>
+              <Typography variant="h6">Faça seu cadastro</Typography>
             </Grid>
             {academicTitlesReducer.loading ||
             academicUnitsReducer.loading ||

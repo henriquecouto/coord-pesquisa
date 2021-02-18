@@ -162,7 +162,7 @@ const Header: React.FC = ({ children }) => {
                     to={routes.home.path}
                     className={classes.titleText}
                   >
-                    NOME
+                    Portal do Pesquisador
                   </Typography>
                 </Grid>
               </Grid>
