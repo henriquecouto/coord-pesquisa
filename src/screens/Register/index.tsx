@@ -28,8 +28,16 @@ import Course from "../../entities/Course";
 import Skeleton from "./Skeleton";
 import { UserActions } from "../../redux/user/user.ducks";
 import routes from "../../constants/routes";
+import Thanks from "../../components/Thanks";
 
 const useStyles = makeStyles((theme: Theme) => ({
+  form: {
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "column",
+    height: "100vh",
+    overflow: "auto",
+  },
   root: {
     padding: theme.spacing(2),
     maxWidth: 500,
@@ -47,6 +55,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(0.8),
     color: theme.palette.grey[100],
     margin: theme.spacing(1),
+  },
+  thanks: {
+    position: "static",
+    bottom: 0,
+    width: "100%",
   },
 }));
 
@@ -110,7 +123,7 @@ const Register: React.FC = () => {
   }, [selectedAcademicUnitId, academicUnitsReducer.academicUnits, setValue]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       <BaseScreen>
         <Paper className={classes.root}>
           <Grid container direction="column" alignItems="flex-end" spacing={2}>
@@ -242,6 +255,9 @@ const Register: React.FC = () => {
           </Grid>
         </Paper>
       </BaseScreen>
+      <div className={classes.thanks}>
+        <Thanks />
+      </div>
     </form>
   );
 };

@@ -28,6 +28,7 @@ import routes from "../../constants/routes";
 import { UserActions } from "../../redux/user/user.ducks";
 import { useDispatch, useSelector } from "react-redux";
 import IGlobalState from "../../redux/definitions/GlobalState";
+import Thanks from "../Thanks";
 
 const drawerWidth = 250;
 
@@ -71,6 +72,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   titleText: {
     textDecoration: "none",
+  },
+  thanks: {
+    position: "absolute",
+    bottom: 0,
   },
 }));
 
@@ -210,6 +215,9 @@ const Header: React.FC = ({ children }) => {
           onOpen={toggleDrawer}
         >
           <MenuList />
+          <div className={classes.thanks}>
+            <Thanks />
+          </div>
         </SwipeableDrawer>
       </Hidden>
       <Hidden mdDown>
@@ -223,6 +231,9 @@ const Header: React.FC = ({ children }) => {
           <Toolbar />
           <div className={classes.drawerContainer}>
             <MenuList />
+          </div>
+          <div className={classes.thanks}>
+            <Thanks />
           </div>
         </Drawer>
       </Hidden>
