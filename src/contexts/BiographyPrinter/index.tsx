@@ -1,6 +1,6 @@
 import { Button, makeStyles, Theme } from "@material-ui/core";
 import { Print } from "@material-ui/icons";
-import React, { createContext, useContext, useRef, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import BiographyPreview from "../../components/BiographyPreview";
 import Modal from "../../components/Modal";

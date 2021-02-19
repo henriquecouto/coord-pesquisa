@@ -1,8 +1,6 @@
 import React from "react";
 import { Skeleton as MuiSkeleton } from "@material-ui/lab";
-import BaseScreen from "../../components/BaseScreen";
-import { Grid, makeStyles, Paper, Theme, Typography } from "@material-ui/core";
-import { LockOutlined as Lock } from "@material-ui/icons";
+import { makeStyles, Theme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) => ({
   input: {
