@@ -45,6 +45,7 @@ const ShortBioForm: React.FC<ShortBioFormProps> = ({ onSubmit, shortBio }) => {
     errors,
     reset,
     getValues,
+    formState,
   } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
     reValidateMode: "onChange",
@@ -132,7 +133,12 @@ const ShortBioForm: React.FC<ShortBioFormProps> = ({ onSubmit, shortBio }) => {
             <Grid item xs>
               <Grid container spacing={2}>
                 <Grid item>
-                  <Button type="submit" variant="contained" color="primary">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    disabled={!formState.isDirty || !formState.isValid}
+                  >
                     Salvar
                   </Button>
                 </Grid>
@@ -141,6 +147,7 @@ const ShortBioForm: React.FC<ShortBioFormProps> = ({ onSubmit, shortBio }) => {
                     onClick={() => reset()}
                     variant="contained"
                     color="secondary"
+                    disabled={!formState.isDirty}
                   >
                     Cancelar
                   </Button>
