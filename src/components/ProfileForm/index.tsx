@@ -153,6 +153,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
           error={!!errors.course?.message}
           message={errors.course?.message}
         />
+        <FormInput disabled name="email" label="Email" control={control} />
         <Grid item container spacing={2}>
           <Grid item>
             <Button
