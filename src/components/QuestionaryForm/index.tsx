@@ -44,7 +44,7 @@ const QuestionaryForm: React.FC<IQuestionaryFormProps> = ({
   respondingQuestionary,
   respondingQuestionaryResponses,
 }) => {
-  const { handleSubmit, control, reset } = useForm({
+  const { handleSubmit, control, reset, formState } = useForm({
     defaultValues: respondingQuestionaryResponses,
   });
   return (
@@ -87,7 +87,12 @@ const QuestionaryForm: React.FC<IQuestionaryFormProps> = ({
         <Grid item>
           <Grid container spacing={2}>
             <Grid item>
-              <Button variant="contained" color="primary" type="submit">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={!formState.isDirty}
+              >
                 Salvar
               </Button>
             </Grid>
@@ -96,6 +101,7 @@ const QuestionaryForm: React.FC<IQuestionaryFormProps> = ({
                 variant="contained"
                 color="secondary"
                 onClick={() => reset()}
+                disabled={!formState.isDirty}
               >
                 Cancelar
               </Button>
