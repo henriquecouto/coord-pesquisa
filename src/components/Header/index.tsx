@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Drawer,
@@ -89,6 +89,7 @@ const Header: React.FC = ({ children }) => {
 
   const [drawer, setDrawer] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+  const [showPermanentDrawer, setShowPermanentDrawer] = useState(false);
   const menuOpen = Boolean(menuAnchor);
 
   const toggleDrawer = () => {
@@ -112,6 +113,11 @@ const Header: React.FC = ({ children }) => {
     handleClose();
     dispatch(UserActions.makeLogout());
   };
+
+  useEffect(() => {
+    if (location.pathname === routes.home.path) setShowPermanentDrawer(false);
+    else setShowPermanentDrawer(true);
+  }, [location]);
 
   const MenuList = () => (
     <List>
@@ -219,23 +225,25 @@ const Header: React.FC = ({ children }) => {
           </div>
         </SwipeableDrawer>
       </Hidden>
-      <Hidden mdDown>
-        <Drawer
-          className={classes.drawer}
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <Toolbar />
-          <div className={classes.drawerContainer}>
-            <MenuList />
-          </div>
-          <div className={classes.thanks}>
-            <Thanks />
-          </div>
-        </Drawer>
-      </Hidden>
+      {showPermanentDrawer && (
+        <Hidden mdDown>
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            <Toolbar />
+            <div className={classes.drawerContainer}>
+              <MenuList />
+            </div>
+            <div className={classes.thanks}>
+              <Thanks />
+            </div>
+          </Drawer>
+        </Hidden>
+      )}
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <BaseScreen withHeader>{children}</BaseScreen>
