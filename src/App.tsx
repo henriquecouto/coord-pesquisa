@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import routes from "./constants/routes";
 import { auth } from "./firebase";
 import { UserActions } from "./redux/user/user.ducks";
+import Home from "./screens/Home";
 import Login from "./screens/Login";
 import Profile from "./screens/Profile";
 import Questionaries from "./screens/Questionaries";
@@ -57,7 +58,7 @@ const App: React.FC = () => {
     <Header>
       <Switch>
         <Route exact path={routes.home.path}>
-          <h1>Home</h1>
+          <Home />
         </Route>
         <Route exact path={routes.profile.path}>
           <Profile />
