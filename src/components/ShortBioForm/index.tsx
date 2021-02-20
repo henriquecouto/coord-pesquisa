@@ -67,6 +67,7 @@ const ShortBioForm: React.FC<ShortBioFormProps> = ({ onSubmit, shortBio }) => {
                 margin="dense"
                 name="researchGate"
                 label="Link do Research Gate"
+                placeholder="Ex.: https://www.researchgate.net/profile/Seu-Nome"
                 control={control}
                 error={!!errors.researchGate?.message}
                 message={errors.researchGate?.message}
@@ -80,6 +81,7 @@ const ShortBioForm: React.FC<ShortBioFormProps> = ({ onSubmit, shortBio }) => {
                 margin="dense"
                 name="orcid"
                 label="Link do Orcid"
+                placeholder="Ex.: https://orcid.org/0000-0001-5503-8274"
                 control={control}
                 error={!!errors.orcid?.message}
                 message={errors.orcid?.message}
@@ -122,6 +124,7 @@ const ShortBioForm: React.FC<ShortBioFormProps> = ({ onSubmit, shortBio }) => {
                 name="education"
                 label="Formação acadêmica"
                 control={control}
+                placeholder="Ex.: Bacharel em Sistemas de Informação - 2021"
               />
             </Card>
           </Grid>
